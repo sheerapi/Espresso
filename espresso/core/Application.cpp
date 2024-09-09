@@ -32,6 +32,19 @@ namespace Espresso
 		es_coreInfo("Initialized {}!", _id.GetCompoundID());
 	}
 
+	auto Application::Present() -> bool
+	{
+		if (_running)
+		{
+			es_coreError("Already presented!");
+			return false;
+		}
+
+		_running = true;
+
+		return true;
+	}
+
 	Application::~Application()
 	{
 		es_coreWarn("Bye!");
