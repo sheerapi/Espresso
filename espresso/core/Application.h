@@ -1,7 +1,6 @@
 #pragma once
-#include "SDL.h"
+#include "SDL_platform.h"
 #include "core/ApplicationInfo.h"
-#include <memory>
 #include <string>
 
 #define es_sdlInitFlag                                                                   \

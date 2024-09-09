@@ -6,7 +6,8 @@ project(
 )
 
 source = [
-    
+    'espresso/core/Application.cpp',
+    'espresso/utils/StringUtils.cpp'
 ]
 
 cfg_data = configuration_data()
