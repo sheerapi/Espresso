@@ -14,5 +14,5 @@ auto main(int argc, const char** argv) -> int
 
 	delete app;
 
-	return static_cast<int>(success);
+	return static_cast<int>(!success);
 }
