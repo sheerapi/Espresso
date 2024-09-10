@@ -1,5 +1,6 @@
 #include "Application.h"
 #include "SDL.h"
+#include "core/EventManager.h"
 #include "core/Logger.h"
 #include "utils/StringUtils.h"
 #include <filesystem>
@@ -41,6 +42,8 @@ namespace Espresso
 		}
 
 		_running = true;
+
+		EventManager::TriggerEvent("present");
 
 		return true;
 	}

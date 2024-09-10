@@ -6,9 +6,9 @@ namespace Espresso
 {
 	void EventManager::TriggerEvent(const std::string& name, void* data)
 	{
-		if (_listeners.contains(stringToLower(name)))
+		if (listeners.contains(stringToLower(name)))
 		{
-			for (auto& callback : _listeners[stringToLower(name)])
+			for (auto& callback : listeners[stringToLower(name)])
 			{
 				(*callback)(data);
 			}
@@ -17,15 +17,15 @@ namespace Espresso
 
 	void EventManager::AddListener(const std::string& name, EventListener callback)
 	{
-		_listeners[stringToLower(name)].push_back(
+		listeners[stringToLower(name)].push_back(
 			std::shared_ptr<EventListener>(&callback));
 	}
 
 	void EventManager::RemoveListener(const std::string& name, EventListener callback)
 	{
-		if (_listeners.contains(stringToLower(name)))
+		if (listeners.contains(stringToLower(name)))
 		{
-			auto vec = _listeners[stringToLower(name)];
+			auto vec = listeners[stringToLower(name)];
 			auto itr = std::find(vec.begin(), vec.end(),
 								 std::shared_ptr<EventListener>(&callback));
 
@@ -42,5 +42,22 @@ namespace Espresso
 		{
 			es_coreError("Event {} not registered!", name);
 		}
+	}
+
+	void EventManager::RemoveListener(const std::string& name)
+	{
+		if (listeners.contains(stringToLower(name)))
+		{
+			listeners[stringToLower(name)].clear();
+		}
+		else
+		{
+			es_coreError("Event {} not registered!", name);
+		}
+	}
+
+	void EventManager::RemoveAll()
+	{
+		listeners.clear();
 	}
 }
