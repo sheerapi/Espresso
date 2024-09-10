@@ -8,46 +8,26 @@ namespace Espresso
 	{
 		if (listeners.contains(stringToLower(name)))
 		{
+			std::lock_guard<std::mutex> lock(eventMutex);
+
 			for (auto& callback : listeners[stringToLower(name)])
 			{
-				(*callback)(data);
+				callback(data);
 			}
 		}
 	}
 
-	void EventManager::AddListener(const std::string& name, EventListener callback)
+	void EventManager::AddListener(const std::string& name, const EventListener& callback)
 	{
-		listeners[stringToLower(name)].push_back(
-			std::shared_ptr<EventListener>(&callback));
-	}
-
-	void EventManager::RemoveListener(const std::string& name, EventListener callback)
-	{
-		if (listeners.contains(stringToLower(name)))
-		{
-			auto vec = listeners[stringToLower(name)];
-			auto itr = std::find(vec.begin(), vec.end(),
-								 std::shared_ptr<EventListener>(&callback));
-
-			if (itr != vec.end())
-			{
-				vec.erase(itr);
-			}
-			else
-			{
-				es_coreError("Specified listener for event {} not found!", name);
-			}
-		}
-		else
-		{
-			es_coreError("Event {} not registered!", name);
-		}
+		std::lock_guard<std::mutex> lock(eventMutex);
+		listeners[stringToLower(name)].push_back(callback);
 	}
 
 	void EventManager::RemoveListener(const std::string& name)
 	{
 		if (listeners.contains(stringToLower(name)))
 		{
+			std::lock_guard<std::mutex> lock(eventMutex);
 			listeners[stringToLower(name)].clear();
 		}
 		else
@@ -58,6 +38,7 @@ namespace Espresso
 
 	void EventManager::RemoveAll()
 	{
+		std::lock_guard<std::mutex> lock(eventMutex);
 		listeners.clear();
 	}
 }
