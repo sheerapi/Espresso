@@ -7,6 +7,7 @@ project(
 
 source = [
     'espresso/core/Application.cpp',
+    'espresso/core/EventManager.cpp',
     'espresso/utils/StringUtils.cpp'
 ]
 
