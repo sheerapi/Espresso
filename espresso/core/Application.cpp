@@ -45,6 +45,10 @@ namespace Espresso
 
 		EventManager::TriggerEvent("present");
 
+		while (true)
+		{
+		}
+
 		return true;
 	}
 
