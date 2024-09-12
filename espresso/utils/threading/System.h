@@ -8,14 +8,14 @@
 
 namespace Espresso::Threading
 {
+	using ThreadID = std::thread::id;
+
 	class System
 	{
 	public:
 		std::atomic_bool Running;
 
-		virtual void Init() {};
-		virtual void Shutdown() {};
-		virtual void Tick() = 0;
+		void Initialize();
 
 		[[nodiscard]] virtual inline auto GetName() const -> std::string
 		{
@@ -27,7 +27,15 @@ namespace Espresso::Threading
 			return Time;
 		}
 
+		[[nodiscard]] virtual inline auto GetID() const -> ThreadID
+		{
+			return _id;
+		}
+
 	protected:
+		virtual void Init() {};
+		virtual void Shutdown() {};
+		virtual void Tick() = 0;
 		virtual void Run();
 		void ExecuteWorkQueue();
 
@@ -35,6 +43,7 @@ namespace Espresso::Threading
 
 	private:
 		std::thread _thread;
+		ThreadID _id;
 		std::queue<std::function<void()>> _workQueue;
 	};
 }

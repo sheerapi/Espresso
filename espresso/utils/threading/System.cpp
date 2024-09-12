@@ -1,5 +1,6 @@
 #include "System.h"
 #include "core/Logger.h"
+#include <thread>
 
 namespace Espresso::Threading
 {
@@ -35,5 +36,15 @@ namespace Espresso::Threading
 			_workQueue.back()();
 			_workQueue.pop();
 		}
+	}
+
+	void System::Initialize()
+	{
+		_thread = std::thread(
+			[=, this]()
+			{
+				_id = std::this_thread::get_id();
+				Run();
+			});
 	}
 }
