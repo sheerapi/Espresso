@@ -1,6 +1,8 @@
 #pragma once
 #include "ThreadTime.h"
 #include <atomic>
+#include <functional>
+#include <queue>
 #include <string>
 #include <thread>
 
@@ -20,9 +22,19 @@ namespace Espresso::Threading
 			return "System";
 		}
 
+		[[nodiscard]] virtual inline auto GetTime() const -> ThreadTime
+		{
+			return Time;
+		}
+
 	protected:
 		virtual void Run();
+		void ExecuteWorkQueue();
+
 		ThreadTime Time;
-		std::thread Thread;
+
+	private:
+		std::thread _thread;
+		std::queue<std::function<void()>> _workQueue;
 	};
 }
