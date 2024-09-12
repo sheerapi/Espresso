@@ -24,7 +24,7 @@ dependencies = [
         'spdlog',
         default_options: {'compile_library': true, 'std_format': 'enabled'},
     ),
-    dependency('sdl2', default_options: { 'use_audio': 'disabled', 'use_file': 'disabled', 'use_locale': 'disabled', 'use_render': 'disabled', 'use_power': 'disabled', 'use_filesystem': 'disabled', 'test': 'disabled' }),
+    dependency('sdl2', default_options: { 'use_audio': 'disabled', 'use_file': 'disabled', 'use_locale': 'disabled', 'use_render': 'disabled', 'use_power': 'disabled', 'use_filesystem': 'disabled', 'test': false }),
     dependency('box2d'),
     dependency('imgui', default_options: { 'dx9': 'disabled', 'dx10': 'disabled', 'dx11': 'disabled', 'dx12': 'disabled', 'metal': 'disabled', 'opengl': 'disabled', 'vulkan': 'disabled', 'sdl_renderer': 'disabled', 'webgpu': 'disabled', 'glfw': 'disabled', 'sdl2': 'disabled', 'osx': 'disabled', 'win': 'disabled', 'allegro5': 'disabled'}),
     dependency('rapidjson'),
