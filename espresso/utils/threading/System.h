@@ -1,7 +1,7 @@
 #pragma once
 #include "ThreadTime.h"
-#include <atomic>
 #include <functional>
+#include <mutex>
 #include <queue>
 #include <string>
 #include <thread>
@@ -13,8 +13,6 @@ namespace Espresso::Threading
 	class System
 	{
 	public:
-		std::atomic_bool Running;
-
 		void Initialize();
 
 		virtual ~System() = default;
@@ -41,12 +39,13 @@ namespace Espresso::Threading
 
 	protected:
 		virtual void Init() {};
-		virtual void Shutdown() {};
 		virtual void Tick() {};
+		virtual void Shutdown() {};
 		virtual void Run();
 		void ExecuteWorkQueue();
 
 		ThreadTime Time;
+		std::mutex Mutex;
 
 	private:
 		std::thread _thread;

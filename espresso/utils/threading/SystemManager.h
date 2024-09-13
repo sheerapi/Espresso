@@ -1,8 +1,12 @@
 #pragma once
+#include "core/EventManager.h"
 #include "core/Logger.h"
 #include "utils/Demangle.h"
 #include "utils/threading/System.h"
+#include <atomic>
+#include <condition_variable>
 #include <memory>
+#include <mutex>
 #include <vector>
 
 namespace Espresso::Threading
@@ -27,7 +31,7 @@ namespace Espresso::Threading
 		{
 			es_coreAssert((int)systems.size() > index, "Out of boundaries");
 
-			return systems[index];
+			return {systems[index]};
 		}
 
 		inline static void Run()
@@ -36,17 +40,55 @@ namespace Espresso::Threading
 			{
 				system->Initialize();
 			}
+
+			std::lock_guard<std::mutex> lock(mtx);
+			ready = true;
+			running = true;
+			cv.notify_all();
 		}
 
 		inline static void Shutdown()
 		{
+			std::unique_lock<std::mutex> lock(mtx);
+			running = false;
+
 			for (auto& system : systems)
 			{
-				system->Running.store(false);
+				EventManager::TriggerEvent("shutdownSystem",
+										   (void*)system->GetName().c_str());
 			}
+
+			cv.wait(lock, []() { return shutdowns.load() == systems.size(); });
+
+			systems.clear();
+		}
+
+		inline static auto GetCV() -> std::condition_variable&
+		{
+			return cv;
+		}
+
+		inline static auto Ready() -> bool
+		{
+			return ready;
+		}
+
+		inline static auto Running() -> bool
+		{
+			return running;
+		}
+
+		inline static void ReportShutdown()
+		{
+			shutdowns++;
 		}
 
 	private:
 		inline static std::vector<std::shared_ptr<System>> systems;
+		inline static std::mutex mtx;
+		inline static std::condition_variable cv;
+		inline static std::atomic<bool> ready;
+		inline static std::atomic<bool> running;
+		inline static std::atomic<int> shutdowns;
 	};
 }

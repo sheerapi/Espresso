@@ -45,7 +45,6 @@ namespace Espresso
 		_running = true;
 
 		Threading::SystemManager::Run();
-
 		EventManager::TriggerEvent("present");
 
 		return true;

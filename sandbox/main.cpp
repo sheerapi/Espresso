@@ -6,7 +6,6 @@ using namespace Espresso;
 
 class TestSystem : public Threading::System
 {
-protected:
 	void Init() override
 	{
 		es_info("Hi");
