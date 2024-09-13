@@ -1,0 +1,3 @@
+[submodule "subprojects/glad"]
+	path = subprojects/glad
+	url = https://github.com/sheerapi/glad
