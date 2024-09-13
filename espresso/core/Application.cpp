@@ -3,6 +3,7 @@
 #include "core/EventManager.h"
 #include "core/Logger.h"
 #include "utils/StringUtils.h"
+#include "utils/threading/SystemManager.h"
 #include <filesystem>
 #include <fstream>
 
@@ -42,6 +43,8 @@ namespace Espresso
 		}
 
 		_running = true;
+
+		Threading::SystemManager::Run();
 
 		EventManager::TriggerEvent("present");
 

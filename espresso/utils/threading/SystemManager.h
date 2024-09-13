@@ -9,7 +9,7 @@ namespace Espresso::Threading
 	class SystemManager
 	{
 	public:
-		template <typename T> auto AddSystem() -> T*
+		template <typename T> static auto AddSystem() -> T*
 		{
 			if (Internals::typeCheck<System, T>())
 			{
@@ -17,26 +17,26 @@ namespace Espresso::Threading
 			}
 
 			auto system = makeRef<T>();
-			_systems.push_back(system);
+			systems.push_back(system);
 		}
 
-		inline void Run()
+		inline static void Run()
 		{
-			for (auto& system : _systems)
+			for (auto& system : systems)
 			{
 				system->Initialize();
 			}
 		}
 
-		inline void Shutdown()
+		inline static void Shutdown()
 		{
-			for (auto& system : _systems)
+			for (auto& system : systems)
 			{
 				system->Running.store(false);
 			}
 		}
 
 	private:
-		std::vector<Ref<System>> _systems;
+		inline static std::vector<Ref<System>> systems;
 	};
 }
