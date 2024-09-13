@@ -1,11 +1,30 @@
 #include "core/EntryPoint.h"
-#include "core/EventManager.h"
+#include "utils/threading/System.h"
+#include "utils/threading/SystemManager.h"
 
-auto createApp(int argc, const char** argv) -> Espresso::Application*
+using namespace Espresso;
+
+class TestSystem : public Threading::System
 {
-	auto* app = new Espresso::Application("com.espresso.sandbox");
+protected:
+	void Init() override
+	{
+		es_info("Hi");
+	}
 
-	Espresso::EventManager::AddListener("present", [](auto data) { es_coreInfo("Hi"); });
+	void Shutdown() override
+	{
+		es_info("Bye");
+	}
+};
+
+auto createApp(int argc, const char** argv) -> Application*
+{
+	auto* app = new Application("com.espresso.sandbox");
+
+	Threading::SystemManager::AddSystem<TestSystem>();
+
+	Threading::SystemManager::GetSystem(0)->Enqueue([]() { es_info("Enqueued"); });
 
 	return app;
 }

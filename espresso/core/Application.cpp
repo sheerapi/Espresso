@@ -53,8 +53,9 @@ namespace Espresso
 
 	Application::~Application()
 	{
-		es_coreWarn("Bye!");
+		Threading::SystemManager::Shutdown();
 		SDL_Quit();
+		es_coreWarn("Bye!");
 	}
 
 	void Application::_setupAppId(const std::string& appId)

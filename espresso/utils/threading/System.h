@@ -17,6 +17,13 @@ namespace Espresso::Threading
 
 		void Initialize();
 
+		virtual ~System() = default;
+
+		void Enqueue(const std::function<void()>& work)
+		{
+			_workQueue.push(work);
+		}
+
 		[[nodiscard]] virtual inline auto GetName() const -> std::string
 		{
 			return "System";
@@ -35,7 +42,7 @@ namespace Espresso::Threading
 	protected:
 		virtual void Init() {};
 		virtual void Shutdown() {};
-		virtual void Tick() = 0;
+		virtual void Tick() {};
 		virtual void Run();
 		void ExecuteWorkQueue();
 

@@ -40,11 +40,7 @@ namespace Espresso::Threading
 
 	void System::Initialize()
 	{
-		_thread = std::thread(
-			[=, this]()
-			{
-				_id = std::this_thread::get_id();
-				Run();
-			});
+		_thread = std::thread([=, this]() { Run(); });
+		_thread.detach();
 	}
 }

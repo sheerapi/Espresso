@@ -1,7 +1,8 @@
 #pragma once
+#include "core/Logger.h"
 #include "utils/Demangle.h"
-#include "utils/memory/Ref.h"
 #include "utils/threading/System.h"
+#include <memory>
 #include <vector>
 
 namespace Espresso::Threading
@@ -9,15 +10,24 @@ namespace Espresso::Threading
 	class SystemManager
 	{
 	public:
-		template <typename T> static auto AddSystem() -> T*
+		template <typename T> static auto AddSystem() -> std::shared_ptr<T>
 		{
 			if (Internals::typeCheck<System, T>())
 			{
-				return nullptr;
+				return std::shared_ptr<T>();
 			}
 
-			auto system = makeRef<T>();
+			auto system = std::make_shared<T>();
 			systems.push_back(system);
+
+			return std::shared_ptr<T>(system);
+		}
+
+		static inline auto GetSystem(int index) -> std::shared_ptr<System>
+		{
+			es_coreAssert((int)systems.size() > index, "Out of boundaries");
+
+			return {systems[index]};
 		}
 
 		inline static void Run()
@@ -37,6 +47,6 @@ namespace Espresso::Threading
 		}
 
 	private:
-		inline static std::vector<Ref<System>> systems;
+		inline static std::vector<std::shared_ptr<System>> systems;
 	};
 }
