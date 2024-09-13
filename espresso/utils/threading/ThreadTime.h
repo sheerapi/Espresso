@@ -66,10 +66,10 @@ namespace Espresso::Threading
 		}
 
 	private:
-		unsigned long _last;
-		unsigned long _now;
-		unsigned long _frames;
-		double _delta;
-		double _elapsed;
+		unsigned long _last{0};
+		unsigned long _now{0};
+		unsigned long _frames{0};
+		double _delta{0};
+		double _elapsed{0};
 	};
 }

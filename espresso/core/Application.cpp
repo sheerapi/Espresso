@@ -49,11 +49,17 @@ namespace Espresso
 
 		SDL_Event e;
 
+		_time = std::make_shared<Threading::ThreadTime>();
+
 		while (_running)
 		{
+			_time->StartMeasure();
+
 			while (SDL_PollEvent(&e) != 0)
 			{
 			}
+
+			_time->EndMeasure();
 		}
 
 		return true;

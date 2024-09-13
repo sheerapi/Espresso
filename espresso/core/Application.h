@@ -32,7 +32,17 @@ namespace Espresso
 
 		[[nodiscard]] inline auto GetDelta() const -> double
 		{
-			return _time.GetDelta();
+			return _time->GetDelta();
+		}
+
+		[[nodiscard]] inline auto GetElapsed() const -> double
+		{
+			return _time->GetElapsed();
+		}
+
+		[[nodiscard]] inline auto GetFrames() const -> unsigned long
+		{
+			return _time->GetFrames();
 		}
 
 		[[nodiscard]] inline static auto GetAppID() -> ApplicationID
@@ -45,11 +55,6 @@ namespace Espresso
 			return main->_env;
 		}
 
-		[[nodiscard]] inline auto GetTime() const -> Threading::ThreadTime
-		{
-			return _time;
-		}
-
 	private:
 		bool _running{false};
 
@@ -57,7 +62,8 @@ namespace Espresso
 		EnvironmentInfo _env;
 
 		std::shared_ptr<Window> _window;
-		Threading::ThreadTime _time;
+		std::shared_ptr<Threading::ThreadTime>
+			_time; // constructor calls functions that are not ready yet
 
 		void _setupAppId(const std::string& appId);
 		void _setupEnvInfo();

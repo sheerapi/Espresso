@@ -1,3 +1,4 @@
+#include "core/Application.h"
 #include "core/EntryPoint.h"
 #include "utils/threading/System.h"
 #include "utils/threading/SystemManager.h"
@@ -6,14 +7,10 @@ using namespace Espresso;
 
 class TestSystem : public Threading::System
 {
-	void Init() override
+	void Tick() override
 	{
-		es_info("Hi");
-	}
-
-	void Shutdown() override
-	{
-		es_info("Bye");
+		es_coreInfo("{} {} {}", Application::main->GetDelta(),
+					Application::main->GetElapsed(), Application::main->GetFrames());
 	}
 };
 
@@ -23,8 +20,6 @@ auto createApp(int argc, const char** argv) -> Application*
 	app->CreateWindow("Sandbox");
 
 	Threading::SystemManager::AddSystem<TestSystem>();
-
-	Threading::SystemManager::GetSystem(0)->Enqueue([]() { es_info("Enqueued"); });
 
 	return app;
 }
