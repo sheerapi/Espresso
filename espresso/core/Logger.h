@@ -21,7 +21,7 @@ namespace Espresso::Internals
 
 		spdlog::set_default_logger(appLogger);
 
-		coreLogger->set_pattern("[%^%n%$][%T][%l] %v");
+		coreLogger->set_pattern("[%^%n%$][%T][%l (%t)] %v");
 		appLogger->set_pattern("[%^%n%$][%T][%l][%s:%# %!()] %v");
 	}
 }

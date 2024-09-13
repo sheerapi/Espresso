@@ -1,18 +1,13 @@
 #pragma once
 #include "core/Logger.h"
 #include <atomic>
-#include <functional>
-#include <thread>
-
-#define es_metaMask 0x7
-#define es_addrMask ~es_metaMask
 
 namespace Espresso
 {
 	template <typename T> class Ref
 	{
 	public:
-		Ref(T* data)
+		explicit Ref(T* data)
 		{
 			es_coreDebug("Ref contained {} bytes at {}", sizeof(T), (void*)data);
 
@@ -28,22 +23,16 @@ namespace Espresso
 			if (_data)
 			{
 				++(*_refCount);
-				unsigned long threadId =
-					std::hash<std::thread::id>()(std::this_thread::get_id());
 
-				es_coreDebug("Thread {} copied {} bytes at {} ({} refs)", threadId,
-							 sizeof(T), (void*)_data, _refCount->load());
+				es_coreDebug("Copied {} bytes at {} ({} refs)", sizeof(T), (void*)_data,
+							 _refCount->load());
 			}
 		}
 
-		template <typename... Args> Ref(Args&&... args)
+		template <typename... Args> explicit Ref(Args&&... args)
 		{
 			_data = new T(args...);
-			unsigned long threadId =
-				std::hash<std::thread::id>()(std::this_thread::get_id());
-
-			es_coreDebug("Thread {} allocated {} bytes at {}", threadId, sizeof(T),
-						 (void*)_data);
+			es_coreDebug("Allocated {} bytes at {}", sizeof(T), (void*)_data);
 		}
 
 		~Ref()
@@ -70,13 +59,15 @@ namespace Espresso
 		{
 			if (_data && --(*_refCount) == 0)
 			{
-				unsigned long threadId =
-					std::hash<std::thread::id>()(std::this_thread::get_id());
 
-				es_coreDebug("Thread {} deallocated {} bytes at {}", threadId, sizeof(T),
-							 (void*)_data);
+				es_coreDebug("Deallocated {} bytes at {}", sizeof(T), (void*)_data);
 				delete _data;
 				delete _refCount;
+			}
+			else if (_data)
+			{
+				es_coreDebug("Deallocated reference to {} ({} references remain)",
+							 (void*)_data, _refCount->load());
 			}
 		}
 
@@ -95,8 +86,23 @@ namespace Espresso
 			return *_data;
 		}
 
+		operator T() const
+		{
+			return *_data;
+		}
+
+		operator T&()
+		{
+			return *_data;
+		}
+
 	private:
 		T* _data;
 		std::atomic<int>* _refCount{new std::atomic<int>(1)};
 	};
+}
+
+template <typename T, typename... Args> auto makeRef(Args&&... args) -> Espresso::Ref<T>
+{
+	return Espresso::Ref<T>(args...);
 }
