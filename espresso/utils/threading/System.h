@@ -27,9 +27,9 @@ namespace Espresso::Threading
 			return Time;
 		}
 
-		[[nodiscard]] virtual inline auto GetID() const -> ThreadID
+		[[nodiscard]] virtual inline auto GetID() const -> unsigned long
 		{
-			return _id;
+			return std::hash<std::thread::id>()(_thread.get_id());
 		}
 
 	protected:
@@ -43,7 +43,6 @@ namespace Espresso::Threading
 
 	private:
 		std::thread _thread;
-		ThreadID _id;
 		std::queue<std::function<void()>> _workQueue;
 	};
 }
