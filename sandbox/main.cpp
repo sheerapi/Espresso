@@ -20,6 +20,7 @@ class TestSystem : public Threading::System
 auto createApp(int argc, const char** argv) -> Application*
 {
 	auto* app = new Application("com.espresso.sandbox");
+	app->CreateWindow("Sandbox");
 
 	Threading::SystemManager::AddSystem<TestSystem>();
 

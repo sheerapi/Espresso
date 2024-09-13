@@ -50,6 +50,13 @@ namespace Espresso
 		return true;
 	}
 
+	auto Application::CreateWindow(const std::string& title, int width,
+								   int height) -> std::shared_ptr<Window>
+	{
+		_window = std::make_shared<Window>(title, width, height);
+		return {_window};
+	}
+
 	Application::~Application()
 	{
 		Threading::SystemManager::Shutdown();

@@ -1,6 +1,8 @@
 #pragma once
 #include "SDL_platform.h"
 #include "core/ApplicationInfo.h"
+#include "core/Window.h"
+#include <memory>
 #include <string>
 
 #define es_sdlInitFlag                                                                   \
@@ -16,6 +18,9 @@ namespace Espresso
 
 		Application(const std::string& appId);
 		~Application();
+
+		auto CreateWindow(const std::string& title = "App", int width = 1280,
+						  int height = 720) -> std::shared_ptr<Window>;
 
 		[[nodiscard]] static inline auto QueryPlatform() -> std::string
 		{
@@ -68,6 +73,8 @@ namespace Espresso
 
 		ApplicationID _id;
 		EnvironmentInfo _env;
+
+		std::shared_ptr<Window> _window;
 
 		void _setupAppId(const std::string& appId);
 		void _setupEnvInfo();
