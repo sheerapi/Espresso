@@ -47,6 +47,15 @@ namespace Espresso
 		Threading::SystemManager::Run();
 		EventManager::TriggerEvent("present");
 
+		SDL_Event e;
+
+		while (_running)
+		{
+			while (SDL_PollEvent(&e) != 0)
+			{
+			}
+		}
+
 		return true;
 	}
 

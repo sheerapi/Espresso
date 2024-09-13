@@ -24,11 +24,22 @@ namespace Espresso::Threading
 					  (double)SDL_GetPerformanceFrequency()) *
 					 0.001F;
 			_elapsed += _delta;
+			_frames++;
 		}
 
 		[[nodiscard]] inline auto GetDelta() const -> double
 		{
 			return _delta;
+		}
+
+		[[nodiscard]] inline auto GetElapsed() const -> double
+		{
+			return _elapsed;
+		}
+
+		[[nodiscard]] inline auto GetFrames() const -> unsigned long
+		{
+			return _frames;
 		}
 
 		[[nodiscard]] inline auto GetTPS() const -> double
@@ -57,6 +68,7 @@ namespace Espresso::Threading
 	private:
 		unsigned long _last;
 		unsigned long _now;
+		unsigned long _frames;
 		double _delta;
 		double _elapsed;
 	};

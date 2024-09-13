@@ -2,6 +2,7 @@
 #include "SDL_platform.h"
 #include "core/ApplicationInfo.h"
 #include "core/Window.h"
+#include "utils/threading/ThreadTime.h"
 #include <memory>
 #include <string>
 
@@ -31,7 +32,7 @@ namespace Espresso
 
 		[[nodiscard]] inline auto GetDelta() const -> double
 		{
-			return _deltaTime;
+			return _time.GetDelta();
 		}
 
 		[[nodiscard]] inline static auto GetAppID() -> ApplicationID
@@ -44,37 +45,19 @@ namespace Espresso
 			return main->_env;
 		}
 
-		[[nodiscard]] inline auto GetTPS() const -> double
+		[[nodiscard]] inline auto GetTime() const -> Threading::ThreadTime
 		{
-			double safeTPS = 0;
-
-			if (GetDelta() > 0)
-			{
-				if (GetDelta() < 1e-6F)
-				{
-					safeTPS = 1.0F / 1e-6F;
-				}
-				else
-				{
-					safeTPS = 1.0F / GetDelta();
-				}
-			}
-			else
-			{
-				safeTPS = 0;
-			}
-
-			return safeTPS;
+			return _time;
 		}
 
 	private:
-		double _deltaTime;
 		bool _running{false};
 
 		ApplicationID _id;
 		EnvironmentInfo _env;
 
 		std::shared_ptr<Window> _window;
+		Threading::ThreadTime _time;
 
 		void _setupAppId(const std::string& appId);
 		void _setupEnvInfo();
