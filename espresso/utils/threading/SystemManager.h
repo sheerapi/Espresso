@@ -12,7 +12,7 @@ namespace Espresso::Threading
 	public:
 		template <typename T> static auto AddSystem() -> std::shared_ptr<T>
 		{
-			if (Internals::typeCheck<System, T>())
+			if (!Internals::typeCheck<System, T>())
 			{
 				return std::shared_ptr<T>();
 			}
@@ -27,7 +27,7 @@ namespace Espresso::Threading
 		{
 			es_coreAssert((int)systems.size() > index, "Out of boundaries");
 
-			return {systems[index]};
+			return systems[index];
 		}
 
 		inline static void Run()

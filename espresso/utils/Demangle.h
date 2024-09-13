@@ -27,7 +27,7 @@ namespace Espresso::Internals
 
 	template <typename T1, typename T2> auto typeCheck() -> bool
 	{
-		if (!std::is_base_of<T2, T2>())
+		if (!std::is_base_of<T1, T2>())
 		{
 			es_coreError("Expected {}, got {}", demangle<T1>(), demangle<T2>());
 			return false;

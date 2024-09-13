@@ -6,7 +6,11 @@ namespace Espresso::Threading
 	class ThreadTime
 	{
 	public:
-		ThreadTime();
+		inline ThreadTime()
+		{
+			_last = 0;
+			_now = SDL_GetPerformanceCounter();
+		}
 
 		inline void StartMeasure()
 		{
