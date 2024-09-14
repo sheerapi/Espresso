@@ -58,6 +58,7 @@ namespace Espresso::Threading
 										   (void*)system->GetName().c_str());
 			}
 
+			es_coreDebug("Waiting for threads to terminate...");
 			cv.wait(lock, []() { return shutdowns.load() == (int)systems.size(); });
 
 			systems.clear();

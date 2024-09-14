@@ -56,7 +56,7 @@ namespace Espresso
 		{
 			_time->StartMeasure();
 
-			while (SDL_PollEvent(&e) != 0)
+			while (SDL_PollEvent(&e) == 1)
 			{
 				Internals::EventHandler::HandleEvent(&e);
 			}

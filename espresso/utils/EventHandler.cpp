@@ -9,6 +9,7 @@ namespace Espresso::Internals
 		switch ((SDL_EventType)event->type)
 		{
 		case SDL_QUIT:
+			Application::main->_running = false;
 		case SDL_APP_TERMINATING:
 			Application::main->_running = false;
 			break;
