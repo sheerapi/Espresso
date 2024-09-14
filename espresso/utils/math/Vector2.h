@@ -86,6 +86,26 @@ namespace Espresso
 			return (X == other.X && Y == other.Y);
 		}
 
+		auto operator<(const Vector2& other) const -> bool
+		{
+			return Magnitude() > other.Magnitude();
+		}
+
+		auto operator>(const Vector2& other) const -> bool
+		{
+			return Magnitude() < other.Magnitude();
+		}
+
+		auto operator<=(const Vector2& other) const -> bool
+		{
+			return Magnitude() >= other.Magnitude();
+		}
+
+		auto operator>=(const Vector2& other) const -> bool
+		{
+			return Magnitude() <= other.Magnitude();
+		}
+
 		auto operator!=(const Vector2& other) const -> bool
 		{
 			return !(*this == other);
@@ -145,6 +165,23 @@ namespace Espresso
 			}
 
 			return current + direction.Normalized() * maxDistanceDelta;
+		}
+
+		inline static auto Min(const Vector2& a, const Vector2& b) -> Vector2
+		{
+			return {Math::Min(a.X, b.X), Math::Min(a.Y, b.Y)};
+		}
+
+		inline static auto Max(const Vector2& a, const Vector2& b) -> Vector2
+		{
+			return {Math::Max(a.X, b.X), Math::Max(a.Y, b.Y)};
+		}
+
+		[[nodiscard]] inline auto Project(const Vector2& other) const -> Vector2
+		{
+			float dotProduct = this->Dot(other);
+			float otherMagnitudeSquared = other.MagnitudeSquared();
+			return other * (dotProduct / otherMagnitudeSquared);
 		}
 
 		inline static auto Angle(const Vector2& from, const Vector2& to) -> float

@@ -28,6 +28,11 @@ namespace Espresso
 			return glm::sqrt(val);
 		}
 
+		inline static auto Pow(float val, float exp) -> float
+		{
+			return glm::pow(val, exp);
+		}
+
 		inline static auto Abs(float val) -> float
 		{
 			return std::fabs(val);
@@ -66,6 +71,26 @@ namespace Espresso
 		inline static auto Atan2(float x, float y) -> float
 		{
 			return std::atan2(x, y);
+		}
+
+		inline static auto Min(float x, float y) -> float
+		{
+			return (y < x) ? y : x;
+		}
+
+		inline static auto Max(float x, float y) -> float
+		{
+			return (x > y) ? x : y;
+		}
+
+		template <typename T> static auto Min(T x, T y) -> T
+		{
+			return (y < x) ? y : x;
+		}
+
+		template <typename T> static auto Max(T x, T y) -> T
+		{
+			return (x > y) ? x : y;
 		}
 
 		inline static auto Clamp(float value, float min, float max) -> float
