@@ -1,9 +1,10 @@
 #pragma once
 #include "Math.h"
+#include "core/Object.h"
 
 namespace Espresso
 {
-	struct Vector2
+	struct Vector2 : public Object
 	{
 	public:
 		float X;
@@ -114,6 +115,12 @@ namespace Espresso
 		static auto Distance(const Vector2& v1, const Vector2& v2) -> float
 		{
 			return (v1 - v2).Magnitude();
+		}
+
+		[[nodiscard]] auto ToString() const -> std::string override
+		{
+			return std::format("[{} .X = {}, .Y = {} ({})]", GetName(), X, Y,
+							   static_cast<const void*>(this));
 		}
 	};
 }

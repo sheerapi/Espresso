@@ -25,6 +25,20 @@ namespace Espresso::Internals
 #endif
 	}
 
+	inline auto demangle(const char* name) -> std::string
+	{
+#ifdef __GNUG__
+		int status;
+
+		std::unique_ptr<char, void (*)(void*)> res{
+			abi::__cxa_demangle(name, nullptr, nullptr, &status), std::free};
+
+		return (status == 0) ? res.get() : name;
+#else
+		return name;
+#endif
+	}
+
 	template <typename T1, typename T2> auto typeCheck() -> bool
 	{
 		if (!std::is_base_of<T1, T2>())
