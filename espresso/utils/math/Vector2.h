@@ -122,5 +122,59 @@ namespace Espresso
 			return std::format("[{} .X = {}, .Y = {} ({})]", GetName(), X, Y,
 							   static_cast<const void*>(this));
 		}
+
+		[[nodiscard]] auto Reflect(const Vector2& normal) const -> Vector2
+		{
+			return *this - normal * 2.0F * Dot(normal);
+		}
+
+		[[nodiscard]] auto Perpendicular() const -> Vector2
+		{
+			return {-Y, X};
+		}
+
+		inline static auto MoveTowards(const Vector2& current, const Vector2& target,
+									   float maxDistanceDelta) -> Vector2
+		{
+			Vector2 direction = target - current;
+			float distance = direction.Magnitude();
+
+			if (distance <= maxDistanceDelta || distance == 0.0F)
+			{
+				return target;
+			}
+
+			return current + direction.Normalized() * maxDistanceDelta;
+		}
+
+		inline static auto Angle(const Vector2& from, const Vector2& to) -> float
+		{
+			float dotProduct = from.Normalized().Dot(to.Normalized());
+			return Math::Acos(Math::Clamp(dotProduct, -1.0F, 1.0F)) * (180.0F / Math::Pi);
+		}
+
+		[[nodiscard]] auto ClampMagnitude(float maxLength) const -> Vector2
+		{
+			float magnitude = Magnitude();
+			if (magnitude > maxLength)
+			{
+				return *this * (maxLength / magnitude);
+			}
+			return *this;
+		}
+
+		static const Vector2 Zero;
+		static const Vector2 One;
+		static const Vector2 Up;
+		static const Vector2 Down;
+		static const Vector2 Left;
+		static const Vector2 Right;
 	};
+
+	const Vector2 Vector2::Zero(0.0F, 0.0F);
+	const Vector2 Vector2::One(1.0F, 1.0F);
+	const Vector2 Vector2::Up(0.0F, 1.0F);
+	const Vector2 Vector2::Down(0.0F, -1.0F);
+	const Vector2 Vector2::Left(-1.0F, 0.0F);
+	const Vector2 Vector2::Right(1.0F, 0.0F);
 }
