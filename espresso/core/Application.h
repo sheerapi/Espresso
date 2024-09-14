@@ -1,5 +1,4 @@
 #pragma once
-#include "SDL_events.h"
 #include "SDL_platform.h"
 #include "core/ApplicationInfo.h"
 #include "core/Window.h"
@@ -13,6 +12,11 @@
 
 namespace Espresso
 {
+	namespace Internals
+	{
+		class EventHandler;
+	}
+
 	class Application
 	{
 	public:
@@ -68,6 +72,7 @@ namespace Espresso
 
 		void _setupAppId(const std::string& appId);
 		void _setupEnvInfo();
-		void _handleEvents(SDL_Event* event);
+
+		friend class Internals::EventHandler;
 	};
 }

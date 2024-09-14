@@ -9,8 +9,6 @@ class TestSystem : public Threading::System
 {
 	void Tick() override
 	{
-		es_coreInfo("{} {} {}", Application::main->GetDelta(),
-					Application::main->GetElapsed(), Application::main->GetFrames());
 	}
 };
 

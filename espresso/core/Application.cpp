@@ -2,6 +2,7 @@
 #include "SDL.h"
 #include "core/EventManager.h"
 #include "core/Logger.h"
+#include "utils/EventHandler.h"
 #include "utils/StringUtils.h"
 #include "utils/threading/SystemManager.h"
 #include <filesystem>
@@ -57,32 +58,13 @@ namespace Espresso
 
 			while (SDL_PollEvent(&e) != 0)
 			{
-				_handleEvents(&e);
-				EventManager::TriggerEvent("internalEvent", (void*)&e);
+				Internals::EventHandler::HandleEvent(&e);
 			}
 
 			_time->EndMeasure();
 		}
 
 		return true;
-	}
-
-	void Application::_handleEvents(SDL_Event* e)
-	{
-		switch ((SDL_EventType)e->type)
-		{
-		case SDL_QUIT:
-		case SDL_APP_TERMINATING:
-			_running = false;
-			break;
-
-		case SDL_APP_LOWMEMORY:
-			es_coreWarn("Application running low on memory!");
-			break;
-
-		default:
-			break;
-		}
 	}
 
 	auto Application::CreateWindow(const std::string& title, int width,

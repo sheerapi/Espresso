@@ -9,6 +9,7 @@ source = [
     'espresso/core/Application.cpp',
     'espresso/core/EventManager.cpp',
     'espresso/core/Window.cpp',
+    'espresso/utils/EventHandler.cpp',
     'espresso/utils/StringUtils.cpp',
     'espresso/utils/threading/System.cpp'
 ]
