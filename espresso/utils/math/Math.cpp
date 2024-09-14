@@ -56,9 +56,9 @@ namespace Espresso
 	{
 		std::string result;
 
-		for (size_t i = 0; i < length; i++)
+		for (int i = 0; i < length; i++)
 		{
-			result += (char)RandomInt(0, 255);
+			result += (char)RandomInt(0x21, 0x7d);
 		}
 
 		return result;
