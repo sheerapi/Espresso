@@ -1,11 +1,10 @@
 #pragma once
 #include "SDL_video.h"
-#include "core/Object.h"
 #include <string>
 
 namespace Espresso
 {
-	class Window : public Object
+	class Window
 	{
 	public:
 		Window(const std::string& title = "App", int width = 1280, int height = 720);
@@ -31,14 +30,6 @@ namespace Espresso
 		[[nodiscard]] inline auto GetTitle() const -> std::string
 		{
 			return _title;
-		}
-
-		[[nodiscard]] auto ToString() const -> std::string override
-		{
-			return std::format("[{} ._handle = {}, ._closed = {}, ._w = {}, ._h = {}, "
-							   "._title = {} ({})]",
-							   GetName(), (void*)_window, _closed, _width, _height,
-							   _title, static_cast<const void*>(this));
 		}
 
 	private:

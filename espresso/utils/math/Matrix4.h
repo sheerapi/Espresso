@@ -1,12 +1,11 @@
 #pragma once
-#include "core/Object.h"
 #include "utils/math/Quaternion.h"
 #include "utils/math/Vector4.h"
 #include <array>
 
 namespace Espresso
 {
-	struct Matrix4 : public Object
+	struct Matrix4
 	{
 	public:
 		inline static constexpr int Components = 4;
@@ -270,14 +269,6 @@ namespace Espresso
 			default:
 				return Row0;
 			}
-		}
-
-		[[nodiscard]] auto ToString() const -> std::string override
-		{
-			return std::format("[{} .Row0 = {}, .Row1 = {}, .Row2 = {}, .Row3 = {} ({})]",
-							   GetName(), Row0.ToString(), Row1.ToString(),
-							   Row2.ToString(), Row3.ToString(),
-							   static_cast<const void*>(this));
 		}
 	};
 }

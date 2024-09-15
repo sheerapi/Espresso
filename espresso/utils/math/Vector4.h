@@ -1,11 +1,10 @@
 #pragma once
 #include "Math.h"
 #include "core/Logger.h"
-#include "core/Object.h"
 
 namespace Espresso
 {
-	struct Vector4 : public Object
+	struct Vector4
 	{
 	public:
 		inline static constexpr int Components = 4;
@@ -179,12 +178,6 @@ namespace Espresso
 			return (v1 - v2).Magnitude();
 		}
 
-		[[nodiscard]] auto ToString() const -> std::string override
-		{
-			return std::format("[{} .X = {}, .Y = {}, .Z = {}, .W = {} ({})]", GetName(),
-							   X, Y, Z, W, static_cast<const void*>(this));
-		}
-
 		[[nodiscard]] auto Reflect(const Vector4& normal) const -> Vector4
 		{
 			return *this - normal * 2.0F * Dot(normal);
@@ -249,12 +242,12 @@ namespace Espresso
 		static const Vector4 Forward;
 	};
 
-	const Vector4 Vector4::Zero(0.0F, 0.0F, 0.0F, 0.0F);
-	const Vector4 Vector4::One(1.0F, 1.0F, 1.0F, 0.0F);
-	const Vector4 Vector4::Up(0.0F, 1.0F, 0.F, 0.0F);
-	const Vector4 Vector4::Down(0.0F, -1.0F, 0.0F, 0.0F);
-	const Vector4 Vector4::Left(-1.0F, 0.0F, 0.0F, 0.0F);
-	const Vector4 Vector4::Right(1.0F, 0.0F, 0.0F, 0.0F);
-	const Vector4 Vector4::Back(0.0F, 0.0F, -1.0F, 0.0F);
-	const Vector4 Vector4::Forward(1.0F, 0.0F, 1.0F, 0.0F);
+	inline const Vector4 Vector4::Zero(0.0F, 0.0F, 0.0F, 0.0F);
+	inline const Vector4 Vector4::One(1.0F, 1.0F, 1.0F, 0.0F);
+	inline const Vector4 Vector4::Up(0.0F, 1.0F, 0.F, 0.0F);
+	inline const Vector4 Vector4::Down(0.0F, -1.0F, 0.0F, 0.0F);
+	inline const Vector4 Vector4::Left(-1.0F, 0.0F, 0.0F, 0.0F);
+	inline const Vector4 Vector4::Right(1.0F, 0.0F, 0.0F, 0.0F);
+	inline const Vector4 Vector4::Back(0.0F, 0.0F, -1.0F, 0.0F);
+	inline const Vector4 Vector4::Forward(1.0F, 0.0F, 1.0F, 0.0F);
 }

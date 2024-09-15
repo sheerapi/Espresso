@@ -2,9 +2,11 @@
 #include "SDL.h"
 #include "core/EventManager.h"
 #include "core/Logger.h"
+#include "core/Scene.h"
 #include "utils/EventHandler.h"
 #include "utils/StringUtils.h"
 #include "utils/threading/SystemManager.h"
+#include "utils/threading/TickSystem.h"
 #include <filesystem>
 #include <fstream>
 
@@ -31,6 +33,10 @@ namespace Espresso
 			es_coreFatal("SDL Failed to initialize. Cannot continue.");
 			return;
 		}
+
+		Scene::ChangeScene(new Scene("MainScene"));
+
+		Threading::SystemManager::AddSystem<Threading::TickSystem>();
 
 		es_coreInfo("Initialized {}!", _id.GetCompoundID());
 	}

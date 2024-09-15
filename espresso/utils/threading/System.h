@@ -1,6 +1,5 @@
 #pragma once
 #include "ThreadTime.h"
-#include "core/Object.h"
 #include <functional>
 #include <mutex>
 #include <queue>
@@ -11,7 +10,7 @@ namespace Espresso::Threading
 {
 	using ThreadID = std::thread::id;
 
-	class System : public Object
+	class System
 	{
 	public:
 		void Initialize();
@@ -20,6 +19,7 @@ namespace Espresso::Threading
 
 		void Enqueue(const std::function<void()>& work)
 		{
+			std::lock_guard<std::mutex> lock(Mutex);
 			_workQueue.push(work);
 		}
 
@@ -31,13 +31,6 @@ namespace Espresso::Threading
 		[[nodiscard]] virtual inline auto GetID() const -> unsigned long
 		{
 			return std::hash<std::thread::id>()(_thread.get_id());
-		}
-
-		[[nodiscard]] auto ToString() const -> std::string override
-		{
-			return std::format("[{} ._thread = {}, ._workQueue = {} ({}, {} frames)]",
-							   GetName(), GetID(), _workQueue.size(),
-							   static_cast<const void*>(this), Time.GetFrames());
 		}
 
 	protected:

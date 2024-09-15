@@ -54,8 +54,9 @@ namespace Espresso::Threading
 
 			for (auto& system : systems)
 			{
-				EventManager::TriggerEvent("shutdownSystem",
-										   (void*)system->GetName().c_str());
+				EventManager::TriggerEvent(
+					"shutdownSystem",
+					(void*)Internals::demangle(typeid(*system).name()).c_str()); // NOLINT
 			}
 
 			es_coreDebug("Waiting for threads to terminate...");

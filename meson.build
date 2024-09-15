@@ -9,7 +9,9 @@ source = [
     'espresso/core/Application.cpp',
     'espresso/core/EventManager.cpp',
     'espresso/core/Window.cpp',
+    'espresso/core/Entity.cpp',
 
+    'espresso/utils/threading/TickSystem.cpp',
     'espresso/utils/math/Math.cpp',
     'espresso/utils/EventHandler.cpp',
     'espresso/utils/StringUtils.cpp',

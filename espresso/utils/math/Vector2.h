@@ -1,11 +1,10 @@
 #pragma once
 #include "Math.h"
 #include "core/Logger.h"
-#include "core/Object.h"
 
 namespace Espresso
 {
-	struct Vector2 : public Object
+	struct Vector2
 	{
 	public:
 		inline static constexpr int Components = 2;
@@ -157,12 +156,6 @@ namespace Espresso
 			return (v1 - v2).Magnitude();
 		}
 
-		[[nodiscard]] auto ToString() const -> std::string override
-		{
-			return std::format("[{} .X = {}, .Y = {} ({})]", GetName(), X, Y,
-							   static_cast<const void*>(this));
-		}
-
 		[[nodiscard]] auto Reflect(const Vector2& normal) const -> Vector2
 		{
 			return *this - normal * 2.0F * Dot(normal);
@@ -228,10 +221,10 @@ namespace Espresso
 		static const Vector2 Right;
 	};
 
-	const Vector2 Vector2::Zero(0.0F, 0.0F);
-	const Vector2 Vector2::One(1.0F, 1.0F);
-	const Vector2 Vector2::Up(0.0F, 1.0F);
-	const Vector2 Vector2::Down(0.0F, -1.0F);
-	const Vector2 Vector2::Left(-1.0F, 0.0F);
-	const Vector2 Vector2::Right(1.0F, 0.0F);
+	inline const Vector2 Vector2::Zero(0.0F, 0.0F);
+	inline const Vector2 Vector2::One(1.0F, 1.0F);
+	inline const Vector2 Vector2::Up(0.0F, 1.0F);
+	inline const Vector2 Vector2::Down(0.0F, -1.0F);
+	inline const Vector2 Vector2::Left(-1.0F, 0.0F);
+	inline const Vector2 Vector2::Right(1.0F, 0.0F);
 }

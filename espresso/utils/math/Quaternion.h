@@ -1,12 +1,11 @@
 #pragma once
 #include "core/Logger.h"
-#include "core/Object.h"
 #include "utils/math/Math.h"
 #include "utils/math/Vector3.h"
 
 namespace Espresso
 {
-	struct Quaternion : public Object
+	struct Quaternion
 	{
 	public:
 		inline static constexpr int Components = 4;
@@ -258,12 +257,6 @@ namespace Espresso
 			default:
 				return W;
 			}
-		}
-
-		[[nodiscard]] auto ToString() const -> std::string override
-		{
-			return std::format("[{} .W = {}, .X = {}, .Y = {}, .Z = {} ({})]", GetName(),
-							   W, X, Y, Z, static_cast<const void*>(this));
 		}
 	};
 }

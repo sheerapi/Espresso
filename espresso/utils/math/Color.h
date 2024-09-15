@@ -1,11 +1,10 @@
 #pragma once
 #include "core/Logger.h"
-#include "core/Object.h"
 #include "utils/math/Math.h"
 
 namespace Espresso
 {
-	struct Color : public Object
+	struct Color
 	{
 	public:
 		inline static constexpr int Components = 4;
@@ -24,12 +23,6 @@ namespace Espresso
 			: R(Math::Clamp(gray, 0, 255)), G(Math::Clamp(gray, 0, 255)),
 			  B(Math::Clamp(gray, 0, 255)), A(Math::Clamp(alpha, 0, 255))
 		{
-		}
-
-		[[nodiscard]] auto ToString() const -> std::string override
-		{
-			return std::format("[{} .R = {}, .G = {}, .B = {}, .A = {} ({})]", GetName(),
-							   R, G, B, A, static_cast<const void*>(this));
 		}
 
 		auto operator+(const Color& other) const -> Color

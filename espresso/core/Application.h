@@ -1,7 +1,6 @@
 #pragma once
 #include "SDL_platform.h"
 #include "core/ApplicationInfo.h"
-#include "core/Object.h"
 #include "core/Window.h"
 #include "utils/threading/ThreadTime.h"
 #include <memory>
@@ -18,7 +17,7 @@ namespace Espresso
 		class EventHandler;
 	}
 
-	class Application : public Object
+	class Application
 	{
 	public:
 		inline static Application* main{nullptr};
@@ -64,13 +63,6 @@ namespace Espresso
 		[[nodiscard]] inline static auto GetEnvInfo() -> EnvironmentInfo
 		{
 			return main->_env;
-		}
-
-		[[nodiscard]] auto ToString() const -> std::string override
-		{
-			return std::format("[{} ._running = {}, ._window = {} ({})]",
-							   GetAppID().GetCompoundID(), _running, (void*)_window.get(),
-							   static_cast<const void*>(this));
 		}
 
 	private:

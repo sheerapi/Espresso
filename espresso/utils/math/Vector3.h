@@ -1,11 +1,10 @@
 #pragma once
 #include "Math.h"
 #include "core/Logger.h"
-#include "core/Object.h"
 
 namespace Espresso
 {
-	struct Vector3 : public Object
+	struct Vector3
 	{
 	public:
 		inline static constexpr int Components = 3;
@@ -171,12 +170,6 @@ namespace Espresso
 			return (v1 - v2).Magnitude();
 		}
 
-		[[nodiscard]] auto ToString() const -> std::string override
-		{
-			return std::format("[{} .X = {}, .Y = {}, .Z = {} ({})]", GetName(), X, Y, Z,
-							   static_cast<const void*>(this));
-		}
-
 		[[nodiscard]] auto Reflect(const Vector3& normal) const -> Vector3
 		{
 			return *this - normal * 2.0F * Dot(normal);
@@ -239,12 +232,12 @@ namespace Espresso
 		static const Vector3 Forward;
 	};
 
-	const Vector3 Vector3::Zero(0.0F, 0.0F, 0.0F);
-	const Vector3 Vector3::One(1.0F, 1.0F, 1.0F);
-	const Vector3 Vector3::Up(0.0F, 1.0F, 0.F);
-	const Vector3 Vector3::Down(0.0F, -1.0F, 0.0F);
-	const Vector3 Vector3::Left(-1.0F, 0.0F, 0.0F);
-	const Vector3 Vector3::Right(1.0F, 0.0F, 0.0F);
-	const Vector3 Vector3::Back(0.0F, 0.0F, -1.0F);
-	const Vector3 Vector3::Forward(1.0F, 0.0F, 1.0F);
+	inline const Vector3 Vector3::Zero(0.0F, 0.0F, 0.0F);
+	inline const Vector3 Vector3::One(1.0F, 1.0F, 1.0F);
+	inline const Vector3 Vector3::Up(0.0F, 1.0F, 0.F);
+	inline const Vector3 Vector3::Down(0.0F, -1.0F, 0.0F);
+	inline const Vector3 Vector3::Left(-1.0F, 0.0F, 0.0F);
+	inline const Vector3 Vector3::Right(1.0F, 0.0F, 0.0F);
+	inline const Vector3 Vector3::Back(0.0F, 0.0F, -1.0F);
+	inline const Vector3 Vector3::Forward(1.0F, 0.0F, 1.0F);
 }

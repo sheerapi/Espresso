@@ -29,7 +29,8 @@ namespace Espresso::Threading
 		}
 		catch (std::exception& e)
 		{
-			es_coreError("An error ocurred in {}: {}", GetName(), e.what());
+			es_coreError("An error ocurred in {}: {}",
+						 Internals::demangle(typeid(*this).name()), e.what());
 			SystemManager::ReportShutdown();
 			SystemManager::GetCV().notify_all();
 		}
