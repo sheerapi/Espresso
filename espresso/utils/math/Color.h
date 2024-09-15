@@ -1,4 +1,5 @@
 #pragma once
+#include "core/Logger.h"
 #include "core/Object.h"
 #include "utils/math/Math.h"
 
@@ -7,6 +8,8 @@ namespace Espresso
 	struct Color : public Object
 	{
 	public:
+		inline static constexpr int Components = 4;
+
 		int R;
 		int G;
 		int B;
@@ -76,6 +79,29 @@ namespace Espresso
 		auto operator!=(const Color& other) const -> bool
 		{
 			return !(*this == other);
+		}
+
+		auto operator[](int index) -> int&
+		{
+			es_coreAssert(index < Components && index > 0, "Out of bounds");
+
+			switch (index)
+			{
+			case 0:
+				return R;
+
+			case 1:
+				return G;
+
+			case 2:
+				return B;
+
+			case 3:
+				return A;
+
+			default:
+				return R;
+			}
 		}
 
 		[[nodiscard]] auto ToGrayscale() const -> Color

@@ -1,5 +1,6 @@
 #pragma once
 #include "Math.h"
+#include "core/Logger.h"
 #include "core/Object.h"
 
 namespace Espresso
@@ -7,6 +8,8 @@ namespace Espresso
 	struct Vector2 : public Object
 	{
 	public:
+		inline static constexpr int Components = 2;
+
 		float X;
 		float Y;
 
@@ -123,6 +126,23 @@ namespace Espresso
 			X += other.X;
 			Y += other.Y;
 			return *this;
+		}
+
+		auto operator[](int index) -> float&
+		{
+			es_coreAssert(index < Components && index > 0, "Out of bounds");
+
+			switch (index)
+			{
+			case 0:
+				return X;
+
+			case 1:
+				return Y;
+
+			default:
+				return X;
+			}
 		}
 
 		auto operator-=(const Vector2& other) -> Vector2&
