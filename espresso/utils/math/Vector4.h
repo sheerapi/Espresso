@@ -1,6 +1,7 @@
 #pragma once
 #include "Math.h"
 #include "core/Logger.h"
+#include "utils/math/Vector3.h"
 
 namespace Espresso
 {
@@ -14,13 +15,11 @@ namespace Espresso
 		float Z;
 		float W;
 
-		Vector4() : X(0), Y(0), Z(0), W(0)
-		{
-		}
+		Vector4() : X(0), Y(0), Z(0), W(0) {};
 
-		Vector4(float x, float y, float z, float w) : X(x), Y(y), Z(z), W(w)
-		{
-		}
+		Vector4(float x, float y, float z, float w) : X(x), Y(y), Z(z), W(w) {};
+
+		Vector4(const Vector3& other) : X(other.X), Y(other.Y), Z(other.Z), W(0) {};
 
 		Vector4(const Vector4& other) = default;
 
@@ -45,6 +44,11 @@ namespace Espresso
 		auto operator+(const Vector4& other) const -> Vector4
 		{
 			return {X + other.X, Y + other.Y, Z + other.Z, W + other.W};
+		}
+
+		auto operator*(const Vector4& other) const -> Vector4
+		{
+			return {X * other.X, Y * other.Y, Z * other.Z, W * other.W};
 		}
 
 		auto operator-(const Vector4& other) const -> Vector4

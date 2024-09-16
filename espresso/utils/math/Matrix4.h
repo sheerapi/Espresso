@@ -37,7 +37,7 @@ namespace Espresso
 			return (*this)[row][col];
 		}
 
-		inline auto operator*(Matrix4& other) -> Matrix4
+		inline auto operator*(Matrix4 other) -> Matrix4
 		{
 			Matrix4 result;
 			for (int row = 0; row < 4; ++row)
@@ -164,7 +164,7 @@ namespace Espresso
 			return result;
 		}
 
-		static Matrix4 Translate(const Vector4& translation)
+		static auto Translate(const Vector4& translation) -> Matrix4
 		{
 			Matrix4 result;
 			result(0, 3) = translation.X;

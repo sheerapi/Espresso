@@ -258,5 +258,19 @@ namespace Espresso
 				return W;
 			}
 		}
+
+		auto operator*(Vector3 q) const -> Vector3
+		{
+			Quaternion v_q(0, q.X, q.Y, q.Z);
+
+			Quaternion q_conjugate = Conjugate();
+			Quaternion rotated_q = *this * v_q * q_conjugate;
+
+			return {rotated_q.X, rotated_q.Y, rotated_q.Z};
+		}
+
+		static const Quaternion Zero;
 	};
+
+	inline const Quaternion Quaternion::Zero(0.0F, 0.0F, 0.0F, 0.0F);
 }

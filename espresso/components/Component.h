@@ -3,6 +3,7 @@
 namespace Espresso
 {
 	class Entity;
+	struct Transform;
 
 	class Component
 	{
@@ -13,6 +14,7 @@ namespace Espresso
 		}
 
 		class Entity* Entity;
+		struct Transform* Transform;
 
 		Component() : _id(++globalCompCount) {};
 

@@ -6,6 +6,9 @@ project(
 )
 
 source = [
+    'espresso/components/Camera.cpp',
+    'espresso/components/Transform.cpp',
+
     'espresso/core/Application.cpp',
     'espresso/core/EventManager.cpp',
     'espresso/core/Window.cpp',

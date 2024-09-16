@@ -8,9 +8,9 @@ using namespace Espresso;
 class TestComponent : public Component
 {
 public:
-	void Start() override
+	void Update() override
 	{
-		es_info("Hi");
+		es_info("{}", es_tickSystem->GetTime().GetTPS());
 	}
 };
 
@@ -21,8 +21,6 @@ auto createApp(int argc, const char** argv) -> Application*
 
 	auto ent = Scene::main->AddEntity();
 	ent->AddComponent<TestComponent>();
-
-	ent->AddChild()->AddComponent<TestComponent>();
 
 	return app;
 }

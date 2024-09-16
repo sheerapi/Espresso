@@ -1,5 +1,6 @@
 #pragma once
 #include "Entity.h"
+#include "components/Camera.h"
 #include <memory>
 #include <utility>
 #include <vector>
@@ -11,7 +12,10 @@ namespace Espresso
 	public:
 		inline static Scene* main{nullptr};
 
-		Scene(std::string name) : _name(std::move(name)) {};
+		Scene(std::string name) : _name(std::move(name))
+		{
+			AddEntity("Main Camera")->AddComponent<Components::Camera>();
+		};
 
 		inline ~Scene()
 		{

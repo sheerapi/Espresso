@@ -63,6 +63,16 @@ namespace Espresso
 		return _children.size() != 0 ? _children[_children.size() - 1] : nullptr;
 	}
 
+	void Entity::NotifyChange()
+	{
+		Transform._hasChanged = true;
+
+		for (auto& child : _children)
+		{
+			child->NotifyChange();
+		}
+	}
+
 	void Entity::RemoveChild(const std::shared_ptr<Entity>& child)
 	{
 		auto itr = std::find(_children.begin(), _children.end(), child);
@@ -91,6 +101,6 @@ namespace Espresso
 			}
 		}
 
-		_transform._tick();
+		Transform._tick();
 	}
 }

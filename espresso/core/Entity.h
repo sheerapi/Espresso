@@ -18,6 +18,8 @@ namespace Espresso
 			return globalEntCount;
 		}
 
+		struct Transform Transform;
+
 		Entity(std::string name = "Entity")
 			: _id(++globalEntCount), _name(std::move(name)) {};
 
@@ -43,6 +45,7 @@ namespace Espresso
 
 		void RemoveChild(const std::shared_ptr<Entity>& child);
 		void RemoveChildren();
+		void NotifyChange();
 
 		template <typename T> auto GetComponent() -> std::shared_ptr<T>
 		{
@@ -99,7 +102,6 @@ namespace Espresso
 		bool _enabled{true};
 		std::vector<std::shared_ptr<Component>> _components;
 		std::vector<std::shared_ptr<Entity>> _children;
-		Transform _transform;
 
 		inline static unsigned long globalEntCount;
 

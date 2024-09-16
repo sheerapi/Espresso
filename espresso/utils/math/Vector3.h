@@ -39,6 +39,11 @@ namespace Espresso
 			return {X + other.X, Y + other.Y, Z + other.Z};
 		}
 
+		auto operator*(const Vector3& other) const -> Vector3
+		{
+			return {X * other.X, Y * other.Y, Z * other.Z};
+		}
+
 		auto operator-(const Vector3& other) const -> Vector3
 		{
 			return {X - other.X, Y - other.Y, Z - other.Z};
