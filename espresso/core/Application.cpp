@@ -7,8 +7,10 @@
 #include "utils/StringUtils.h"
 #include "utils/threading/SystemManager.h"
 #include "utils/threading/TickSystem.h"
+#include <chrono>
 #include <filesystem>
 #include <fstream>
+#include <thread>
 
 #ifdef DEBUG
 #	include <regex>
@@ -68,6 +70,8 @@ namespace Espresso
 			}
 
 			_time->EndMeasure();
+
+			std::this_thread::sleep_for(std::chrono::milliseconds(16));
 		}
 
 		return true;
