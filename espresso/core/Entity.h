@@ -5,7 +5,6 @@
 #include "utils/threading/TickSystem.h"
 #include <memory>
 #include <string>
-#include <utility>
 #include <vector>
 
 namespace Espresso
@@ -20,10 +19,12 @@ namespace Espresso
 
 		struct Transform Transform;
 
-		Entity(std::string name = "Entity")
-			: _id(++globalEntCount), _name(std::move(name)) {};
+		Entity(const std::string& name = "Entity") // NOLINT
+			: _id(++globalEntCount), _name(name) {
 
-		template <typename T> auto AddComponent() -> std::shared_ptr<Component>
+			  };
+
+		template <typename T> auto AddComponent() -> std::shared_ptr<T>
 		{
 			if (!Internals::typeCheck<Component, T>())
 			{
@@ -32,6 +33,7 @@ namespace Espresso
 
 			auto comp = std::make_shared<T>();
 			comp->Entity = this;
+			comp->Transform = &Transform;
 			_components.push_back(comp);
 			es_tickSystem->Enqueue([comp]() { comp->Start(); });
 

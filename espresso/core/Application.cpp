@@ -34,9 +34,9 @@ namespace Espresso
 			return;
 		}
 
-		Scene::ChangeScene(new Scene("MainScene"));
-
 		Threading::SystemManager::AddSystem<Threading::TickSystem>();
+
+		Scene::ChangeScene(new Scene("MainScene"));
 
 		es_coreInfo("Initialized {}!", _id.GetCompoundID());
 	}

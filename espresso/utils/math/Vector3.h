@@ -144,7 +144,7 @@ namespace Espresso
 
 		auto operator[](int index) -> float&
 		{
-			es_coreAssert(index < Components && index > 0, "Out of bounds");
+			es_coreAssert(index < Components && index >= 0, "Out of bounds");
 
 			switch (index)
 			{

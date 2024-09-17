@@ -2,7 +2,6 @@
 #include "Entity.h"
 #include "components/Camera.h"
 #include <memory>
-#include <utility>
 #include <vector>
 
 namespace Espresso
@@ -12,7 +11,7 @@ namespace Espresso
 	public:
 		inline static Scene* main{nullptr};
 
-		Scene(std::string name) : _name(std::move(name))
+		Scene(const std::string& name = "Scene") : _name(name) // NOLINT
 		{
 			AddEntity("Main Camera")->AddComponent<Components::Camera>();
 		};
@@ -32,7 +31,7 @@ namespace Espresso
 			-> std::shared_ptr<Entity>
 		{
 			auto ent = std::make_shared<Entity>(name);
-			_entities.push_back(ent);
+			_entities.push_back(std::shared_ptr<Entity>(ent));
 			return ent;
 		}
 
@@ -85,6 +84,11 @@ namespace Espresso
 			}
 
 			_entities.erase(itr);
+		}
+
+		inline auto GetCurrentEntities() -> unsigned long
+		{
+			return _entities.size();
 		}
 
 		inline void RemoveEntities()

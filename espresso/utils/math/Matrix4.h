@@ -126,7 +126,7 @@ namespace Espresso
 		static auto Perspective(float fov, float aspectRatio, float near,
 								float far) -> Matrix4
 		{
-			float tanHalfFov = Math::Tan(fov / 2.0F);
+			float tanHalfFov = Math::Tan(Math::DegreesToRadians(fov) / 2.0F);
 			Matrix4 result;
 			result(0, 0) = 1.0F / (aspectRatio * tanHalfFov);
 			result(1, 1) = 1.0F / tanHalfFov;
@@ -250,7 +250,7 @@ namespace Espresso
 
 		auto operator[](int index) -> Vector4&
 		{
-			es_coreAssert(index < Components && index > 0, "Out of bounds");
+			es_coreAssert(index < Components && index >= 0, "Out of bounds");
 
 			switch (index)
 			{

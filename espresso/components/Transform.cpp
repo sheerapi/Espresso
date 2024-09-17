@@ -77,8 +77,8 @@ namespace Espresso
 
 		if (Components::Camera::main != nullptr)
 		{
-			_mvp = model * Components::Camera::main->GetViewMatrix() *
-				   Components::Camera::main->GetProjectionMatrix();
+			_mvp = Components::Camera::main->GetProjectionMatrix() *
+				   Components::Camera::main->GetViewMatrix() * model;
 		}
 	}
 }

@@ -15,6 +15,8 @@ namespace Espresso::Threading
 
 			Init();
 
+			ExecuteWorkQueue();
+
 			while (SystemManager::Running())
 			{
 				Time.StartMeasure();
@@ -40,7 +42,7 @@ namespace Espresso::Threading
 	{
 		while (!_workQueue.empty())
 		{
-			_workQueue.back()();
+			_workQueue.front()();
 			_workQueue.pop();
 		}
 	}

@@ -17,9 +17,12 @@ namespace Espresso::Components
 	public:
 		inline static Camera* main{nullptr};
 
-		void Start() override
+		inline void Start() override
 		{
-			main = this;
+			if (main == nullptr)
+			{
+				main = this;
+			}
 		}
 
 		CameraType Type;

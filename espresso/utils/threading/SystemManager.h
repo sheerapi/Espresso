@@ -21,8 +21,18 @@ namespace Espresso::Threading
 				return std::shared_ptr<T>();
 			}
 
+			if (systems.size() >= std::thread::hardware_concurrency())
+			{
+				es_coreWarn("Hardware thread softlimit reached, consider stopping some "
+							"systems... ({} systems)",
+							systems.size());
+			}
+
 			auto system = std::make_shared<T>();
 			systems.push_back(system);
+
+			es_coreTrace("Allocating new {} instance...({} systems)",
+						 Internals::demangle<T>(), systems.size() - 1);
 
 			return std::shared_ptr<T>(system);
 		}
