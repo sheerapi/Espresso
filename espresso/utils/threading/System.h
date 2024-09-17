@@ -3,7 +3,6 @@
 #include <functional>
 #include <mutex>
 #include <queue>
-#include <string>
 #include <thread>
 
 namespace Espresso::Threading

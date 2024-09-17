@@ -5,6 +5,7 @@
 #include "core/Scene.h"
 #include "utils/EventHandler.h"
 #include "utils/StringUtils.h"
+#include "utils/threading/Scheduler.h"
 #include "utils/threading/SystemManager.h"
 #include "utils/threading/TickSystem.h"
 #include <chrono>
@@ -26,6 +27,8 @@ namespace Espresso
 		}
 
 		main = this;
+
+		Threading::Scheduler::Init();
 
 		_setupAppId(appId);
 		_setupEnvInfo();
@@ -87,6 +90,7 @@ namespace Espresso
 	Application::~Application()
 	{
 		Threading::SystemManager::Shutdown();
+		Threading::Scheduler::Shutdown();
 		SDL_Quit();
 		es_coreWarn("Bye!");
 	}
