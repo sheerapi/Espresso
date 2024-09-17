@@ -247,11 +247,11 @@ namespace Espresso
 	};
 
 	inline const Vector4 Vector4::Zero(0.0F, 0.0F, 0.0F, 0.0F);
-	inline const Vector4 Vector4::One(1.0F, 1.0F, 1.0F, 0.0F);
+	inline const Vector4 Vector4::One(1.0F, 1.0F, 1.0F, 1.0F);
 	inline const Vector4 Vector4::Up(0.0F, 1.0F, 0.F, 0.0F);
 	inline const Vector4 Vector4::Down(0.0F, -1.0F, 0.0F, 0.0F);
 	inline const Vector4 Vector4::Left(-1.0F, 0.0F, 0.0F, 0.0F);
 	inline const Vector4 Vector4::Right(1.0F, 0.0F, 0.0F, 0.0F);
 	inline const Vector4 Vector4::Back(0.0F, 0.0F, -1.0F, 0.0F);
-	inline const Vector4 Vector4::Forward(1.0F, 0.0F, 1.0F, 0.0F);
+	inline const Vector4 Vector4::Forward(0.0F, 0.0F, 1.0F, 0.0F);
 }

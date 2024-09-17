@@ -8,23 +8,20 @@ namespace Espresso
 {
 	auto Transform::Position() -> Vector3
 	{
-		return _position + (_entity->Parent() != nullptr
-								? _entity->Parent()->Transform.Position()
-								: Vector3::Zero);
+		return _position + (!_entity->IsOrphan() ? _entity->Parent()->Transform.Position()
+												 : Vector3::Zero);
 	}
 
 	auto Transform::Rotation() -> Quaternion
 	{
-		return _rotation + (_entity->Parent() != nullptr
-								? _entity->Parent()->Transform.Rotation()
-								: Quaternion());
+		return _rotation + (!_entity->IsOrphan() ? _entity->Parent()->Transform.Rotation()
+												 : Quaternion());
 	}
 
 	auto Transform::Scale() -> Vector3
 	{
-		return _scale * (_entity->Parent() != nullptr
-							 ? _entity->Parent()->Transform.Scale()
-							 : Vector3::One);
+		return _scale * (!_entity->IsOrphan() ? _entity->Parent()->Transform.Scale()
+											  : Vector3::One);
 	}
 
 	void Transform::Position(Vector3 newPos)
@@ -47,17 +44,17 @@ namespace Espresso
 
 	auto Transform::Forward() -> Vector3
 	{
-		return Rotation() * Vector3(0.0F, 0.0F, 1.0F);
+		return Rotation() * Vector3::Forward;
 	}
 
 	auto Transform::Up() -> Vector3
 	{
-		return Rotation() * Vector3(0.0F, 1.0F, 0.0F);
+		return Rotation() * Vector3::Up;
 	}
 
 	auto Transform::Right() -> Vector3
 	{
-		return Rotation() * Vector3(1.0F, 0.0F, 0.0F);
+		return Rotation() * Vector3::Right;
 	}
 
 	auto Transform::GetTransformationMatrix() -> Matrix4
@@ -67,13 +64,13 @@ namespace Espresso
 
 	void Transform::_tick()
 	{
-		if (_hasChanged)
+		if (!_hasChanged)
 		{
 			return;
 		}
 
-		Matrix4 model = Matrix4::Translate(Vector4(Position())) *
-						Matrix4::ToMatrix(Rotation()) * Matrix4::Scale(Vector4(Scale()));
+		Matrix4 model = Matrix4::Scale(Vector4(Scale())) * Matrix4::ToMatrix(Rotation()) *
+						Matrix4::Translate(Vector4(Position()));
 
 		if (Components::Camera::main != nullptr)
 		{

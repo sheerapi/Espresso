@@ -21,7 +21,7 @@ namespace Espresso
 
 		Entity(const std::string& name = "Entity") // NOLINT
 			: _id(++globalEntCount), _name(name) {
-
+			Transform._entity = this;
 			  };
 
 		template <typename T> auto AddComponent() -> std::shared_ptr<T>
@@ -95,6 +95,11 @@ namespace Espresso
 		[[nodiscard]] inline auto IsEnabled() const -> bool
 		{
 			return _enabled;
+		}
+
+		[[nodiscard]] inline auto IsOrphan() const -> bool
+		{
+			return _parent == nullptr;
 		}
 
 	private:

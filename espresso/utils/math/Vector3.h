@@ -244,5 +244,5 @@ namespace Espresso
 	inline const Vector3 Vector3::Left(-1.0F, 0.0F, 0.0F);
 	inline const Vector3 Vector3::Right(1.0F, 0.0F, 0.0F);
 	inline const Vector3 Vector3::Back(0.0F, 0.0F, -1.0F);
-	inline const Vector3 Vector3::Forward(1.0F, 0.0F, 1.0F);
+	inline const Vector3 Vector3::Forward(0.0F, 0.0F, 1.0F);
 }

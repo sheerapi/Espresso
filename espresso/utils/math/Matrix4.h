@@ -210,8 +210,8 @@ namespace Espresso
 		{
 			Matrix4 result;
 			result(0, 0) = scale.X;
-			result(1, 0) = scale.Y;
-			result(2, 0) = scale.Z;
+			result(1, 1) = scale.Y;
+			result(2, 2) = scale.Z;
 			return result;
 		}
 
@@ -221,31 +221,36 @@ namespace Espresso
 					Row2.X, Row2.Y, Row2.Z, Row2.W, Row3.X, Row3.Y, Row3.Z, Row3.W};
 		}
 
-		inline static auto ToMatrix(const Quaternion& quat) -> Matrix4
+		inline static auto ToMatrix(const Quaternion& q) -> Matrix4
 		{
-			Matrix4 mat;
+			float xx = q.X * q.X;
+			float yy = q.Y * q.Y;
+			float zz = q.Z * q.Z;
+			float xy = q.X * q.Y;
+			float xz = q.X * q.Z;
+			float yz = q.Y * q.Z;
+			float wx = q.W * q.X;
+			float wy = q.W * q.Y;
+			float wz = q.W * q.Z;
 
-			mat[0][0] = 1 - 2 * (quat.Y * quat.Y + quat.X * quat.Z);
-			mat[0][1] = 2 * (quat.X * quat.Y - quat.Z * quat.W);
-			mat[0][2] = 2 * (quat.X * quat.Z + quat.Y * quat.W);
-			mat[0][3] = 0.0F;
+			Matrix4 rotationMatrix = {1.0F - 2.0F * (yy + zz),
+									  2.0F * (xy - wz),
+									  2.0F * (xz + wy),
+									  0.0F,
+									  2.0F * (xy + wz),
+									  1.0F - 2.0F * (xx + zz),
+									  2.0F * (yz - wx),
+									  0.0F,
+									  2.0F * (xz - wy),
+									  2.0F * (yz + wx),
+									  1.0F - 2.0F * (xx + yy),
+									  0.0F,
+									  0.0F,
+									  0.0F,
+									  0.0F,
+									  1.0F};
 
-			mat[1][0] = 2 * (quat.X * quat.Y + quat.Z * quat.W);
-			mat[1][1] = 1 - 2 * (quat.X * quat.X + quat.Z * quat.Z);
-			mat[1][2] = 2 * (quat.Y * quat.Z - quat.X * quat.W);
-			mat[1][3] = 0.0F;
-
-			mat[2][0] = 2 * (quat.X * quat.Z - quat.Y * quat.W);
-			mat[2][1] = 2 * (quat.Y * quat.Z + quat.X * quat.W);
-			mat[2][2] = 1 - 2 * (quat.X * quat.X + quat.Y * quat.Y);
-			mat[2][3] = 0.0F;
-
-			mat[3][0] = 0.0F;
-			mat[3][1] = 0.0F;
-			mat[3][2] = 0.0F;
-			mat[3][3] = 1.0F;
-
-			return mat;
+			return rotationMatrix;
 		}
 
 		auto operator[](int index) -> Vector4&
