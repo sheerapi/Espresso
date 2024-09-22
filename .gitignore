@@ -1,6 +1,7 @@
-
+build/*
 !build/assets/
 !build/registry.json
+!build/project.json
 .cache
 .vscode
 subprojects/*-*
