@@ -1,4 +1,4 @@
-build/*
+
 !build/assets/
 !build/registry.json
 .cache
