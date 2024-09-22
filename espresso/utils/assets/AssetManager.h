@@ -1,13 +1,19 @@
 #pragma once
 #include <memory>
 
-namespace Espresso::Assets
+namespace Espresso
 {
 	class AssetManager
 	{
 	public:
-		template <typename T> auto Load(const std::string& name) -> std::shared_ptr<T>
+		template <typename T>
+		static auto Load(const std::string& name) -> std::shared_ptr<T>
 		{
 		}
+
+	private:
+		static void Init();
+
+		friend class Application;
 	};
 }

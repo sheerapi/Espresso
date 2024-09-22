@@ -22,7 +22,7 @@ namespace Espresso
 	public:
 		inline static Application* main{nullptr};
 
-		Application(const std::string& appId);
+		Application();
 		~Application();
 
 		auto CreateWindow(const std::string& title = "App", int width = 1280,
@@ -55,9 +55,14 @@ namespace Espresso
 			return _time->GetFrames();
 		}
 
+		[[nodiscard]] inline static auto GetAppInfo() -> ApplicationInfo
+		{
+			return main->_info;
+		}
+
 		[[nodiscard]] inline static auto GetAppID() -> ApplicationID
 		{
-			return main->_id;
+			return main->_info.AppID;
 		}
 
 		[[nodiscard]] inline static auto GetEnvInfo() -> EnvironmentInfo
@@ -68,14 +73,13 @@ namespace Espresso
 	private:
 		bool _running{false};
 
-		ApplicationID _id;
+		ApplicationInfo _info;
 		EnvironmentInfo _env;
 
 		std::shared_ptr<Window> _window;
 		std::shared_ptr<Threading::ThreadTime>
 			_time; // constructor calls functions that are not ready yet
 
-		void _setupAppId(const std::string& appId);
 		void _setupEnvInfo();
 
 		friend class Internals::EventHandler;

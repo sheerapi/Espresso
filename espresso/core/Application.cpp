@@ -5,6 +5,7 @@
 #include "core/Scene.h"
 #include "utils/EventHandler.h"
 #include "utils/StringUtils.h"
+#include "utils/assets/AssetManager.h"
 #include "utils/threading/Scheduler.h"
 #include "utils/threading/SystemManager.h"
 #include "utils/threading/TickSystem.h"
@@ -19,7 +20,7 @@
 
 namespace Espresso
 {
-	Application::Application(const std::string& appId)
+	Application::Application()
 	{
 		if (main != nullptr)
 		{
@@ -30,8 +31,8 @@ namespace Espresso
 
 		Threading::Scheduler::Init();
 
-		_setupAppId(appId);
 		_setupEnvInfo();
+		AssetManager::Init();
 
 		if (SDL_Init(es_sdlInitFlag) < 0)
 		{
@@ -43,7 +44,7 @@ namespace Espresso
 
 		Scene::ChangeScene(new Scene("MainScene"));
 
-		es_coreInfo("Initialized {}!", _id.GetCompoundID());
+		es_coreInfo("Initialized {}!", _info.AppID.GetCompoundID());
 	}
 
 	auto Application::Present() -> bool
@@ -95,7 +96,7 @@ namespace Espresso
 		es_coreWarn("Bye!");
 	}
 
-	void Application::_setupAppId(const std::string& appId)
+	ApplicationID::ApplicationID(const std::string& appId)
 	{
 #ifdef DEBUG
 		if (!std::regex_match(
@@ -110,14 +111,14 @@ namespace Espresso
 
 		if (segments.size() == 3)
 		{
-			_id.Domain = segments[0];
-			_id.Organization = segments[1];
-			_id.Name = segments[2];
+			Domain = segments[0];
+			Org = segments[1];
+			Name = segments[2];
 		}
 		else
 		{
-			_id.Organization = segments[0];
-			_id.Name = segments[1];
+			Org = segments[0];
+			Name = segments[1];
 		}
 	}
 
@@ -216,7 +217,14 @@ namespace Espresso
 		es_coreError("Unsupported platform at _setupEnvInfo().");
 #endif
 
+#ifdef DEBUG
 		_env.AssetsDirectory =
 			std::filesystem::path(_env.ExecutablePath).remove_filename() / "assets";
+#else
+		_env.AssetsDirectory =
+			std::filesystem::path(_env.ExecutablePath).remove_filename() / "assets.pak";
+#endif
+
+		_env.RootPath = std::filesystem::path(_env.ExecutablePath).remove_filename();
 	}
 }

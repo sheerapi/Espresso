@@ -15,7 +15,7 @@ public:
 
 auto createApp(int argc, const char** argv) -> Application*
 {
-	auto* app = new Application("com.espresso.sandbox");
+	auto* app = new Application();
 	app->CreateWindow("Sandbox");
 
 	auto ent = Scene::main->AddEntity();

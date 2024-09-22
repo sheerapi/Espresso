@@ -16,6 +16,9 @@ source = [
 
     'espresso/utils/threading/Scheduler.cpp',
     'espresso/utils/threading/TickSystem.cpp',
+
+    'espresso/utils/assets/AssetManager.cpp',
+
     'espresso/utils/math/Math.cpp',
     'espresso/utils/EventHandler.cpp',
     'espresso/utils/StringUtils.cpp',
