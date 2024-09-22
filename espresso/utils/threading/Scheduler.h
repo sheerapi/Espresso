@@ -1,5 +1,4 @@
 #pragma once
-#include "core/Logger.h"
 #include "utils/threading/ThreadTime.h"
 #include <atomic>
 #include <condition_variable>
