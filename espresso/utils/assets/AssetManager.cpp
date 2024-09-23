@@ -16,6 +16,12 @@ namespace Espresso
 		rapidjson::Document projectDoc;
 
 #ifdef DEBUG
+		if (!std::filesystem::exists(std::filesystem::path(Application::GetEnvInfo().RootPath) / "project.json"))
+		{
+			es_coreError("project.json file not found!");
+			return;
+		}
+		
 		auto file = std::ifstream(
 			std::filesystem::path(Application::GetEnvInfo().RootPath) / "project.json");
 		rapidjson::IStreamWrapper isw(file);
