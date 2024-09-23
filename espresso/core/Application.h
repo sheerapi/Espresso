@@ -83,5 +83,6 @@ namespace Espresso
 		void _setupEnvInfo();
 
 		friend class Internals::EventHandler;
+		friend class AssetManager;
 	};
 }

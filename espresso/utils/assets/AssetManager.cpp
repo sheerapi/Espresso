@@ -21,7 +21,7 @@ namespace Espresso
 			es_coreError("project.json file not found!");
 			return;
 		}
-		
+
 		auto file = std::ifstream(
 			std::filesystem::path(Application::GetEnvInfo().RootPath) / "project.json");
 		rapidjson::IStreamWrapper isw(file);
@@ -41,32 +41,32 @@ namespace Espresso
 		es_coreAssert(projectDoc["project"]["author"].IsString(),
 					  "Expected string at author");
 
-		Application::GetAppInfo().Name = projectDoc["project"]["name"].GetString();
-		Application::GetAppInfo().Organization =
+		Application::main->_info.Name = projectDoc["project"]["name"].GetString();
+		Application::main->_info.Organization =
 			projectDoc["project"]["author"].GetString();
 
 		if (projectDoc["project"].HasMember("version"))
 		{
 			es_coreAssert(projectDoc["project"]["version"].IsString(),
 						  "Expected string at version");
-			Application::GetAppInfo().Version =
+			Application::main->_info.Version =
 				projectDoc["project"]["version"].GetString();
 		}
 		else
 		{
-			Application::GetAppInfo().Version = "1.0.0";
+			Application::main->_info.Version = "1.0.0";
 		}
 
 		if (projectDoc["project"].HasMember("id"))
 		{
 			es_coreAssert(projectDoc["project"]["id"].IsString(),
 						  "Expected string at id");
-			Application::GetAppID() =
+			Application::main->_info.AppID =
 				ApplicationID(projectDoc["project"]["id"].GetString());
 		}
 		else
 		{
-			Application::GetAppID() =
+			Application::main->_info.AppID =
 				ApplicationID(stringToLower(Application::GetAppInfo().Organization + "." +
 											Application::GetAppInfo().Name));
 		}
