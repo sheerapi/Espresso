@@ -18,7 +18,7 @@ namespace Espresso
 
 			if (cache.contains(name))
 			{
-				return cache[name];
+				return cache[name].lock();
 			}
 
 			if (!registry.contains(name))
@@ -27,7 +27,7 @@ namespace Espresso
 				return nullptr;
 			}
 
-			auto asset = std::make_shared<T>();
+			auto asset = std::make_shared<T>(name);
 			cache[name] = asset;
 
 			Threading::Scheduler::SubmitTask(
@@ -40,9 +40,19 @@ namespace Espresso
 			return asset;
 		}
 
+		inline static void UnloadAsset(const std::string& name)
+		{
+			if (!cache.contains(name))
+			{
+				es_coreError("Asset {} is not loaded!", name);
+				return;
+			}
+
+			cache.erase(cache.find(name));
+		}
+
 	private:
-		inline static std::unordered_map<std::string, std::shared_ptr<Assets::Asset>>
-			cache;
+		inline static std::unordered_map<std::string, std::weak_ptr<Assets::Asset>> cache;
 		inline static std::unordered_map<std::string, std::string> registry;
 
 		static void Init();
