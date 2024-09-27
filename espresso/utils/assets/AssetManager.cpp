@@ -3,6 +3,7 @@
 #include "core/Application.h"
 #include "core/Logger.h"
 #include "utils/StringUtils.h"
+#include <sstream>
 #define RAPIDJSON_NOMEMBERITERATORCLASS 1
 #include "rapidjson/document.h"
 #include "rapidjson/istreamwrapper.h"
@@ -14,6 +15,7 @@ namespace Espresso
 	void AssetManager::Init()
 	{
 		rapidjson::Document projectDoc;
+		rapidjson::Document registryDoc;
 
 #ifdef DEBUG
 		if (!std::filesystem::exists(std::filesystem::path(Application::GetEnvInfo().RootPath) / "project.json"))
@@ -29,6 +31,7 @@ namespace Espresso
 		projectDoc.ParseStream(isw);
 #endif
 
+		es_coreAssert(projectDoc.IsObject(), "Expected an object");
 		es_coreAssert(projectDoc.HasMember("project"), "Expected project object");
 		es_coreAssert(projectDoc["project"].IsObject(),
 					  "Expected object at project member");
@@ -70,5 +73,45 @@ namespace Espresso
 				ApplicationID(stringToLower(Application::GetAppInfo().Organization + "." +
 											Application::GetAppInfo().Name));
 		}
+
+		registryDoc.Parse(Read("registry.json").data());
+
+		es_coreAssert(registryDoc.IsObject(), "Expected an object");
+		es_coreAssert(registryDoc.HasMember("assets"), "Expected assets object");
+		es_coreAssert(registryDoc["assets"].IsObject(), "Expected an object");
+
+		for (rapidjson::Value::ConstMemberIterator itr =
+				 registryDoc["assets"].MemberBegin();
+			 itr != registryDoc["assets"].MemberEnd(); ++itr)
+		{
+			es_coreAssert(itr->name.IsString(), "Expected a string");
+			es_coreAssert(itr->value.IsString(), "Expected a string");
+
+			registry.insert({std::string(itr->name.GetString()),
+							 std::string(itr->value.GetString())});
+		}
+
+		es_coreInfo("Loaded {} asset entries!", registry.size());
+	}
+
+	auto AssetManager::Read(const std::string& path) -> std::string
+	{
+#ifdef DEBUG
+		auto fullPath =
+			std::filesystem::path(Application::GetEnvInfo().AssetsDirectory) / path;
+
+		if (!std::filesystem::exists(fullPath))
+		{
+			es_coreError("{} does not exist!", fullPath.string());
+			return "";
+		}
+
+		std::ifstream file(fullPath, std::ios_base::binary);
+		std::stringstream stream;
+
+		stream << file.rdbuf();
+
+		return stream.str();
+#endif
 	}
 }
