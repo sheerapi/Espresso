@@ -2,6 +2,7 @@
 #include "core/Application.h"
 #include "core/EntryPoint.h"
 #include "core/Scene.h"
+#include "utils/assets/AssetManager.h"
 
 using namespace Espresso;
 
@@ -10,6 +11,7 @@ class TestComponent : public Component
 public:
 	void Start() override
 	{
+		auto asset = AssetManager::Load<Assets::Asset>("default");
 	}
 };
 
