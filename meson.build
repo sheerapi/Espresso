@@ -45,7 +45,7 @@ dependencies = [
     dependency('rapidjson'),
     dependency('luajit'),
     dependency('magic_enum'),
-    dependency('zlib'),
+    dependency('libzstd'),
     dependency('openal'),
     dependency('glm'),
     dependency('glad')
@@ -67,3 +67,4 @@ espresso_dep = declare_dependency(
 )
 
 executable('sandbox', sources: 'sandbox/main.cpp', dependencies: espresso_dep)
+executable('compresser', sources: 'tools/compresser.cpp', dependencies: [dependency('libzstd'), dependency('rapidjson')])
