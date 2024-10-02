@@ -6,7 +6,7 @@
 #include <memory>
 #include <unordered_map>
 
-#ifdef DEBUG
+#ifndef DEBUG
 #	include "zstd.h"
 #endif
 
@@ -59,7 +59,7 @@ namespace Espresso
 		inline static std::unordered_map<std::string, std::weak_ptr<Assets::Asset>> cache;
 		inline static std::unordered_map<std::string, std::string> registry;
 
-#ifdef DEBUG
+#ifndef DEBUG
 		inline static std::unordered_map<std::string, unsigned int> registryOffsets;
 		inline static ZSTD_DCtx* dctx;
 #endif

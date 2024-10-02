@@ -2,8 +2,12 @@
 #include "config.h"
 #include "core/Application.h"
 #include "core/Logger.h"
-#include "tools/SHA256.h"
-#include "tools/base64.hpp"
+
+#ifndef DEBUG
+#	include "tools/SHA256.h"
+#	include "tools/base64.hpp"
+#endif
+
 #include "utils/StringUtils.h"
 #include <cstdio>
 #include <sstream>
@@ -21,7 +25,7 @@ namespace Espresso
 	{
 		rapidjson::Document projectDoc;
 
-#ifndef DEBUG
+#ifdef DEBUG
 		if (!std::filesystem::exists(std::filesystem::path(Application::GetEnvInfo().RootPath) / "project.json"))
 		{
 			es_coreError("project.json file not found!");
@@ -116,7 +120,7 @@ namespace Espresso
 											Application::GetAppInfo().Name));
 		}
 
-#ifndef DEBUG
+#ifdef DEBUG
 		for (const auto& entry : std::filesystem::recursive_directory_iterator("assets"))
 		{
 			if (entry.is_regular_file())
@@ -125,7 +129,7 @@ namespace Espresso
 
 				if (registry.contains(std::filesystem::path(path).replace_extension("")))
 				{
-					es_coreWarn("Asset \"{}\" already exists!", path);
+					es_coreWarn("Asset \"{}\" already exists!", path.string());
 				}
 
 				registry[path.replace_extension("")] = entry.path();
@@ -170,7 +174,7 @@ namespace Espresso
 
 	auto AssetManager::Read(const std::string& path) -> std::string
 	{
-#ifndef DEBUG
+#ifdef DEBUG
 		auto fullPath =
 			std::filesystem::path(Application::GetEnvInfo().AssetsDirectory) / path;
 
