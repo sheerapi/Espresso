@@ -167,6 +167,8 @@ namespace Espresso
 		}
 
 		dctx = ZSTD_createDCtx();
+		ZSTD_DCtx_setParameter(dctx, ZSTD_d_windowLogMax, 18);
+		ZSTD_DCtx_setParameter(dctx, ZSTD_d_stableOutBuffer, 1);
 #endif
 
 		es_coreInfo("Loaded {} asset entries!", registry.size());
@@ -236,8 +238,6 @@ namespace Espresso
 				fileSize -= zstdOut.pos;
 			}
 		}
-
-		es_info("{}", output.str());
 
 		return output.str();
 #endif

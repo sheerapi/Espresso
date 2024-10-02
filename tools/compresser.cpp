@@ -185,6 +185,7 @@ auto main(int argc, const char** argv) -> int
 	ZSTD_CCtx* cctx = ZSTD_createCCtx();
 
 	ZSTD_CCtx_setParameter(cctx, ZSTD_cParameter::ZSTD_c_strategy, 9);
+	ZSTD_CCtx_setParameter(cctx, ZSTD_c_windowLog, 18);
 
 	for (const auto& entry : fs::recursive_directory_iterator("."))
 	{

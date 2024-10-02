@@ -7,6 +7,7 @@
 #include <unordered_map>
 
 #ifndef DEBUG
+#	define ZSTD_STATIC_LINKING_ONLY 1
 #	include "zstd.h"
 #endif
 
