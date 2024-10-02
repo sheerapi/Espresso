@@ -217,7 +217,7 @@ namespace Espresso
 		es_coreError("Unsupported platform at _setupEnvInfo().");
 #endif
 
-#ifdef DEBUG
+#ifndef DEBUG
 		_env.AssetsDirectory =
 			std::filesystem::path(_env.ExecutablePath).remove_filename() / "assets";
 #else

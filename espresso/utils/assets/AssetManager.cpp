@@ -5,12 +5,15 @@
 #include "tools/SHA256.h"
 #include "tools/base64.hpp"
 #include "utils/StringUtils.h"
+#include <cstdio>
 #include <sstream>
 #define RAPIDJSON_NOMEMBERITERATORCLASS 1
 #include "rapidjson/document.h"
 #include "rapidjson/istreamwrapper.h"
 #include <filesystem>
 #include <fstream>
+
+#define es_chunkSize 16384
 
 namespace Espresso
 {
@@ -113,12 +116,61 @@ namespace Espresso
 											Application::GetAppInfo().Name));
 		}
 
+#ifndef DEBUG
+		for (const auto& entry : std::filesystem::recursive_directory_iterator("assets"))
+		{
+			if (entry.is_regular_file())
+			{
+				auto path = entry.path();
+
+				if (registry.contains(std::filesystem::path(path).replace_extension("")))
+				{
+					es_coreWarn("Asset \"{}\" already exists!", path);
+				}
+
+				registry[path.replace_extension("")] = entry.path();
+			}
+		}
+#else
+		auto package =
+			std::ifstream(Application::GetEnvInfo().AssetsDirectory, std::ios::binary);
+
+		while (package.peek() != EOF)
+		{
+			unsigned char pathLength;
+			std::string path;
+
+			package.read(reinterpret_cast<char*>(&pathLength), sizeof(pathLength));
+
+			path.resize(pathLength + 1);
+
+			package.read(reinterpret_cast<char*>(path.data()), (int)pathLength);
+
+			unsigned offset = package.tellg();
+			registryOffsets[path] = offset;
+
+			uint32_t fileSize;
+			package.read(reinterpret_cast<char*>(&fileSize), sizeof(fileSize));
+
+			package.seekg(fileSize, std::ios::cur);
+
+			if (registry.contains(std::filesystem::path(path).replace_extension("")))
+			{
+				es_coreWarn("Asset \"{}\" already exists!", path);
+			}
+
+			registry[std::filesystem::path(path).replace_extension("")] = path;
+		}
+
+		dctx = ZSTD_createDCtx();
+#endif
+
 		es_coreInfo("Loaded {} asset entries!", registry.size());
 	}
 
 	auto AssetManager::Read(const std::string& path) -> std::string
 	{
-#ifdef DEBUG
+#ifndef DEBUG
 		auto fullPath =
 			std::filesystem::path(Application::GetEnvInfo().AssetsDirectory) / path;
 
@@ -134,6 +186,56 @@ namespace Espresso
 		stream << file.rdbuf();
 
 		return stream.str();
+#else
+		if (!registryOffsets.contains(path))
+		{
+			es_coreError("{} does not exist!", path);
+			return "";
+		}
+
+		std::vector<char> compressedBuffer(es_chunkSize);
+		std::vector<char> decompressedBuffer(es_chunkSize);
+
+		auto package =
+			std::ifstream(Application::GetEnvInfo().AssetsDirectory, std::ios::binary);
+
+		package.seekg(registryOffsets[path], std::ios::cur);
+
+		uint32_t fileSize;
+		package.read(reinterpret_cast<char*>(&fileSize), sizeof(fileSize));
+
+		ZSTD_outBuffer zstdOut{decompressedBuffer.data(), decompressedBuffer.size(), 0};
+		ZSTD_inBuffer zstdIn{compressedBuffer.data(), 0, 0};
+
+		std::ostringstream output(std::stringstream::binary);
+
+		while (fileSize > 0 && package.peek() != EOF)
+		{
+			package.read(compressedBuffer.data(),
+						 (fileSize > es_chunkSize ? es_chunkSize : fileSize));
+			zstdIn.src = compressedBuffer.data();
+			zstdIn.size = package.gcount();
+			zstdIn.pos = 0;
+
+			while (zstdIn.pos < zstdIn.size)
+			{
+				zstdOut.pos = 0;
+				size_t result = ZSTD_decompressStream(dctx, &zstdOut, &zstdIn);
+				if (ZSTD_isError(result) == 1U)
+				{
+					es_coreError("Failed to decompress {}! {}", path,
+								 ZSTD_getErrorName(result));
+					return "";
+				}
+
+				output.write(decompressedBuffer.data(), static_cast<long>(zstdOut.pos));
+				fileSize -= zstdOut.pos;
+			}
+		}
+
+		es_info("{}", output.str());
+
+		return output.str();
 #endif
 	}
 }

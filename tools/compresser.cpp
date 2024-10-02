@@ -179,15 +179,18 @@ auto main(int argc, const char** argv) -> int
 	// this is a mess. im sorry
 	// initialize everything for zstd
 	std::ofstream archive("assets.pak", std::ios::binary);
+
+	std::filesystem::current_path("assets");
+
 	ZSTD_CCtx* cctx = ZSTD_createCCtx();
 
 	ZSTD_CCtx_setParameter(cctx, ZSTD_cParameter::ZSTD_c_strategy, 9);
 
-	for (const auto& entry : fs::recursive_directory_iterator("assets"))
+	for (const auto& entry : fs::recursive_directory_iterator("."))
 	{
 		if (entry.is_regular_file())
 		{
-			compressFile(cctx, entry.path(), archive);
+			compressFile(cctx, fs::relative(entry.path(), "."), archive);
 		}
 	}
 

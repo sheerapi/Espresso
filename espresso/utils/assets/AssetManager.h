@@ -6,6 +6,10 @@
 #include <memory>
 #include <unordered_map>
 
+#ifdef DEBUG
+#	include "zstd.h"
+#endif
+
 namespace Espresso
 {
 	class AssetManager
@@ -54,6 +58,11 @@ namespace Espresso
 	private:
 		inline static std::unordered_map<std::string, std::weak_ptr<Assets::Asset>> cache;
 		inline static std::unordered_map<std::string, std::string> registry;
+
+#ifdef DEBUG
+		inline static std::unordered_map<std::string, unsigned int> registryOffsets;
+		inline static ZSTD_DCtx* dctx;
+#endif
 
 		static void Init();
 		static auto Read(const std::string& path) -> std::string;
