@@ -21,6 +21,7 @@ source = [
     'espresso/utils/assets/Asset.cpp',
 
     'espresso/utils/math/Math.cpp',
+    'espresso/utils/SHA256.cpp',
     'espresso/utils/EventHandler.cpp',
     'espresso/utils/StringUtils.cpp',
     'espresso/utils/threading/System.cpp'

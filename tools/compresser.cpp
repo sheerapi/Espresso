@@ -1,6 +1,9 @@
+#include "SHA256.cpp" // NOLINT
+#include "base64.hpp"
 #include "rapidjson/document.h"
 #include "rapidjson/prettywriter.h"
 #include "rapidjson/stringbuffer.h"
+#include "tools/SHA256.h"
 #include "zstd.h"
 #include <algorithm>
 #include <cstdint>
@@ -139,10 +142,14 @@ auto main(int argc, const char** argv) -> int
 		std::stringstream projectSS;
 		std::ifstream projectFile("project.json");
 		projectSS << projectFile.rdbuf();
-		project = projectSS.str();
+
+		SHA256 sha;
+		sha.update(projectSS.str());
+
+		project = SHA256::toString(sha.digest()) + projectSS.str();
 
 		rapidjson::Document doc1;
-		doc1.Parse(project.c_str());
+		doc1.Parse(projectSS.str().c_str());
 
 		if (doc1["project"].HasMember("id"))
 		{
@@ -156,9 +163,13 @@ auto main(int argc, const char** argv) -> int
 		}
 	}
 
+	project = base64::to_base64(project);
+
+	// this isnt needed. just for the sake of it
+	// things look way more sophisticated when they use binary instead of simple json
 	for (char& c : project)
 	{
-		c = static_cast<char>(c << 4);
+		c = static_cast<char>(static_cast<unsigned char>(c) << 1);
 	}
 
 	std::ofstream projectFile("project");

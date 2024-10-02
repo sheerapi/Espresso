@@ -2,6 +2,8 @@
 #include "config.h"
 #include "core/Application.h"
 #include "core/Logger.h"
+#include "tools/SHA256.h"
+#include "tools/base64.hpp"
 #include "utils/StringUtils.h"
 #include <sstream>
 #define RAPIDJSON_NOMEMBERITERATORCLASS 1
@@ -15,9 +17,8 @@ namespace Espresso
 	void AssetManager::Init()
 	{
 		rapidjson::Document projectDoc;
-		rapidjson::Document registryDoc;
 
-#ifdef DEBUG
+#ifndef DEBUG
 		if (!std::filesystem::exists(std::filesystem::path(Application::GetEnvInfo().RootPath) / "project.json"))
 		{
 			es_coreError("project.json file not found!");
@@ -29,6 +30,44 @@ namespace Espresso
 		rapidjson::IStreamWrapper isw(file);
 
 		projectDoc.ParseStream(isw);
+#else
+		if (!std::filesystem::exists(
+				std::filesystem::path(Application::GetEnvInfo().RootPath) / "project"))
+		{
+			es_coreError("project file not found!");
+			return;
+		}
+
+		auto file = std::ifstream(
+			std::filesystem::path(Application::GetEnvInfo().RootPath) / "project",
+			std::ios::binary);
+
+		std::stringstream ss;
+		ss << file.rdbuf();
+
+		auto content = ss.str();
+
+		for (auto& c : content)
+		{
+			c = static_cast<char>(static_cast<unsigned char>(c) >> 1);
+		}
+
+		content = base64::from_base64(content);
+
+		auto shaFile = content.substr(0, 64);
+
+		content = content.substr(64);
+
+		SHA256 sha;
+		sha.update(content);
+
+		if (SHA256::toString(sha.digest()) != shaFile)
+		{
+			es_coreError("Checksums for project file do not match!");
+			return;
+		}
+
+		projectDoc.Parse(content.c_str());
 #endif
 
 		es_coreAssert(projectDoc.IsObject(), "Expected an object");
@@ -72,23 +111,6 @@ namespace Espresso
 			Application::main->_info.AppID =
 				ApplicationID(stringToLower(Application::GetAppInfo().Organization + "." +
 											Application::GetAppInfo().Name));
-		}
-
-		registryDoc.Parse(Read("registry.json").data());
-
-		es_coreAssert(registryDoc.IsObject(), "Expected an object");
-		es_coreAssert(registryDoc.HasMember("assets"), "Expected assets object");
-		es_coreAssert(registryDoc["assets"].IsObject(), "Expected an object");
-
-		for (rapidjson::Value::ConstMemberIterator itr =
-				 registryDoc["assets"].MemberBegin();
-			 itr != registryDoc["assets"].MemberEnd(); ++itr)
-		{
-			es_coreAssert(itr->name.IsString(), "Expected a string");
-			es_coreAssert(itr->value.IsString(), "Expected a string");
-
-			registry.insert({std::string(itr->name.GetString()),
-							 std::string(itr->value.GetString())});
 		}
 
 		es_coreInfo("Loaded {} asset entries!", registry.size());
