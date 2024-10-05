@@ -125,14 +125,16 @@ namespace Espresso
 		{
 			if (entry.is_regular_file())
 			{
-				auto path = entry.path();
+				auto path = std::filesystem::relative(entry.path(), "assets");
 
-				if (registry.contains(std::filesystem::path(path).replace_extension("")))
+				path.replace_extension("");
+
+				if (registry.contains(path))
 				{
 					es_coreWarn("Asset \"{}\" already exists!", path.string());
 				}
 
-				registry[path.replace_extension("")] = entry.path();
+				registry[path] = std::filesystem::relative(entry.path(), "assets");
 			}
 		}
 #else
