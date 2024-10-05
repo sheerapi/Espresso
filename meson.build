@@ -14,6 +14,8 @@ source = [
     'espresso/core/Window.cpp',
     'espresso/core/Entity.cpp',
 
+    'espresso/graphics/Renderer.cpp',
+
     'espresso/utils/threading/Scheduler.cpp',
     'espresso/utils/threading/TickSystem.cpp',
 

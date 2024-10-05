@@ -3,6 +3,7 @@
 #include "core/EventManager.h"
 #include "core/Logger.h"
 #include "core/Scene.h"
+#include "graphics/Renderer.h"
 #include "utils/EventHandler.h"
 #include "utils/StringUtils.h"
 #include "utils/assets/AssetManager.h"
@@ -39,6 +40,8 @@ namespace Espresso
 			es_coreFatal("SDL Failed to initialize. Cannot continue.");
 			return;
 		}
+
+		Graphics::Renderer::ChooseBackend();
 
 		Threading::SystemManager::AddSystem<Threading::TickSystem>();
 

@@ -1,5 +1,6 @@
 #include "Window.h"
 #include "core/Logger.h"
+#include "graphics/Renderer.h"
 
 namespace Espresso
 {
@@ -9,9 +10,11 @@ namespace Espresso
 		_width = width;
 		_height = height;
 
-		_window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_UNDEFINED,
-								   SDL_WINDOWPOS_UNDEFINED, width, height,
-								   SDL_WINDOW_ALLOW_HIGHDPI | SDL_WINDOW_RESIZABLE);
+		_window =
+			SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_UNDEFINED,
+							 SDL_WINDOWPOS_UNDEFINED, width, height,
+							 SDL_WINDOW_ALLOW_HIGHDPI | SDL_WINDOW_RESIZABLE |
+								 Graphics::Renderer::main->GetInternalBackendFlag());
 
 		if (_window == nullptr)
 		{
