@@ -32,6 +32,11 @@ namespace Espresso
 			return _title;
 		}
 
+		[[nodiscard]] inline auto GetHandle() const -> void*
+		{
+			return (void*)_window;
+		}
+
 	private:
 		SDL_Window* _window;
 		std::string _title;

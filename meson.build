@@ -15,9 +15,11 @@ source = [
     'espresso/core/Entity.cpp',
 
     'espresso/graphics/Renderer.cpp',
+    'espresso/graphics/noop/NoOpRenderer.cpp',
 
     'espresso/utils/threading/Scheduler.cpp',
     'espresso/utils/threading/TickSystem.cpp',
+    'espresso/utils/threading/RenderSystem.cpp',
 
     'espresso/utils/assets/AssetManager.cpp',
     'espresso/utils/assets/Asset.cpp',

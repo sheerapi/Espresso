@@ -7,6 +7,7 @@
 #include "utils/EventHandler.h"
 #include "utils/StringUtils.h"
 #include "utils/assets/AssetManager.h"
+#include "utils/threading/RenderSystem.h"
 #include "utils/threading/Scheduler.h"
 #include "utils/threading/SystemManager.h"
 #include "utils/threading/TickSystem.h"
@@ -44,6 +45,7 @@ namespace Espresso
 		Graphics::Renderer::ChooseBackend();
 
 		Threading::SystemManager::AddSystem<Threading::TickSystem>();
+		Threading::SystemManager::AddSystem<Threading::RenderSystem>();
 
 		Scene::ChangeScene(new Scene("MainScene"));
 

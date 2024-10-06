@@ -8,7 +8,12 @@ namespace Espresso::Graphics::NoOp
 	public:
 		inline auto GetInternalBackendFlag() -> unsigned long override
 		{
-			return 0;
+			// SDL_WINDOW_OPENGL
+			return 2;
 		}
+
+		void Init() override;
+		void Shutdown() override;
+		void Swap() override;
 	};
 }
