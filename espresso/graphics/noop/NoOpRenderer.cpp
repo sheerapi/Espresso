@@ -24,7 +24,6 @@ namespace Espresso::Graphics::NoOp
 
 	void NoOpRenderer::Swap()
 	{
-		glClear(GL_COLOR_BUFFER_BIT);
 		SDL_GL_SwapWindow((SDL_Window*)Application::main->GetWindow()->GetHandle());
 	}
 
