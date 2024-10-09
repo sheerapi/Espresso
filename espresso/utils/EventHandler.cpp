@@ -1,4 +1,5 @@
 #include "EventHandler.h"
+#include "SDL_events.h"
 #include "core/Application.h"
 #include "core/Logger.h"
 
@@ -16,6 +17,10 @@ namespace Espresso::Internals
 
 		case SDL_APP_LOWMEMORY:
 			es_coreWarn("Application running low on memory!");
+			break;
+
+		case SDL_WINDOWEVENT:
+			Application::main->_window->_handleEvent(event);
 			break;
 
 		default:

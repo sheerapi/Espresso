@@ -1,5 +1,8 @@
 #pragma once
+#include "SDL_events.h"
 #include "SDL_video.h"
+#include "utils/EventHandler.h"
+#include "utils/math/Vector2.h"
 #include <string>
 
 namespace Espresso
@@ -14,17 +17,17 @@ namespace Espresso
 
 		[[nodiscard]] inline auto GetWidth() const -> int
 		{
-			return _width;
+			return (int)_size.X;
 		}
 
 		[[nodiscard]] inline auto GetHeight() const -> int
 		{
-			return _height;
+			return (int)_size.Y;
 		}
 
 		[[nodiscard]] inline auto GetAspectRatio() const -> float
 		{
-			return (float)_width / (float)_height;
+			return (float)GetWidth() / (float)GetHeight();
 		}
 
 		[[nodiscard]] inline auto GetTitle() const -> std::string
@@ -37,11 +40,20 @@ namespace Espresso
 			return (void*)_window;
 		}
 
+		[[nodiscard]] inline auto GetPosition() const -> Vector2
+		{
+			return _pos;
+		}
+
 	private:
 		SDL_Window* _window;
 		std::string _title;
-		int _width;
-		int _height;
+		Vector2 _size;
+		Vector2 _pos;
 		bool _closed{false};
+
+		void _handleEvent(SDL_Event* e);
+
+		friend class Internals::EventHandler;
 	};
 }

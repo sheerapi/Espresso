@@ -1,6 +1,7 @@
 #include "components/Component.h"
 #include "core/Application.h"
 #include "core/EntryPoint.h"
+#include "core/EventManager.h"
 #include "core/Scene.h"
 #include "utils/assets/AssetManager.h"
 
@@ -11,7 +12,7 @@ class TestComponent : public Component
 public:
 	void Start() override
 	{
-		auto asset = AssetManager::Load<Assets::Asset>("default");
+		EventManager::AddListener("window.resized", [](auto data) { es_info("sh"); });
 	}
 };
 
