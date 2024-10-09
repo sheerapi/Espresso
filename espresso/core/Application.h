@@ -76,7 +76,7 @@ namespace Espresso
 		ApplicationInfo _info;
 		EnvironmentInfo _env;
 
-		std::shared_ptr<Window> _window;
+		std::shared_ptr<Window> _window{nullptr};
 		std::shared_ptr<Threading::ThreadTime>
 			_time; // constructor calls functions that are not ready yet
 

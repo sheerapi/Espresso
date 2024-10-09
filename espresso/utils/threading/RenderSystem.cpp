@@ -1,20 +1,30 @@
 #include "RenderSystem.h"
+#include "core/Application.h"
 #include "graphics/Renderer.h"
 
 namespace Espresso::Threading
 {
 	void RenderSystem::Init()
 	{
-		Graphics::Renderer::main->Init();
+		if (Application::main->GetWindow() != nullptr)
+		{
+			Graphics::Renderer::main->Init();
+		}
 	}
 
 	void RenderSystem::Tick()
 	{
-		Graphics::Renderer::main->Swap();
+		if (Application::main->GetWindow() != nullptr)
+		{
+			Graphics::Renderer::main->Swap();
+		}
 	}
 
 	void RenderSystem::Shutdown()
 	{
-		Graphics::Renderer::main->Shutdown();
+		if (Application::main->GetWindow() != nullptr)
+		{
+			Graphics::Renderer::main->Shutdown();
+		}
 	}
 }
