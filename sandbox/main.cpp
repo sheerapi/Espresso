@@ -12,7 +12,6 @@ class TestComponent : public Component
 public:
 	void Start() override
 	{
-		EventManager::AddListener("window.resized", [](auto data) { es_info("sh"); });
 	}
 };
 

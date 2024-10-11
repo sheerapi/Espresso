@@ -70,6 +70,11 @@ namespace Espresso
 			return main->_env;
 		}
 
+		inline void Close()
+		{
+			_running = false;
+		}
+
 	private:
 		bool _running{false};
 

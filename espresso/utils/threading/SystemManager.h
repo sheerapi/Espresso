@@ -65,7 +65,7 @@ namespace Espresso::Threading
 			for (auto& system : systems)
 			{
 				EventManager::TriggerEvent(
-					"shutdownSystem",
+					"system.shutdown",
 					(void*)Internals::demangle(typeid(*system).name()).c_str()); // NOLINT
 			}
 

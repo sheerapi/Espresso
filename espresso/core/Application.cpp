@@ -63,7 +63,7 @@ namespace Espresso
 		_running = true;
 
 		Threading::SystemManager::Run();
-		EventManager::TriggerEvent("present");
+		EventManager::TriggerEvent("app.present");
 
 		SDL_Event e;
 
@@ -95,6 +95,7 @@ namespace Espresso
 
 	Application::~Application()
 	{
+		EventManager::TriggerEvent("app.quit");
 		Threading::SystemManager::Shutdown();
 		Threading::Scheduler::Shutdown();
 		SDL_Quit();

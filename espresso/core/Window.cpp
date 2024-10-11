@@ -1,4 +1,5 @@
 #include "Window.h"
+#include "core/Application.h"
 #include "core/EventManager.h"
 #include "core/Logger.h"
 #include "graphics/Renderer.h"
@@ -41,7 +42,7 @@ namespace Espresso
 		case SDL_WINDOWEVENT_CLOSE:
 		{
 			Close();
-			EventManager::TriggerEvent("quit");
+			Application::main->Close();
 			break;
 		}
 
