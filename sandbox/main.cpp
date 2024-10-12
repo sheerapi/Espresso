@@ -1,16 +1,15 @@
 #include "components/Component.h"
 #include "core/Application.h"
 #include "core/EntryPoint.h"
-#include "core/EventManager.h"
 #include "core/Scene.h"
-#include "utils/assets/AssetManager.h"
+#include "input/Input.h"
 
 using namespace Espresso;
 
 class TestComponent : public Component
 {
 public:
-	void Start() override
+	void Update() override
 	{
 	}
 };

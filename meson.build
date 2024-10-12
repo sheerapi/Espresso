@@ -14,6 +14,8 @@ source = [
     'espresso/core/Window.cpp',
     'espresso/core/Entity.cpp',
 
+    'espresso/input/Input.cpp',
+
     'espresso/graphics/Renderer.cpp',
     'espresso/graphics/noop/NoOpRenderer.cpp',
 

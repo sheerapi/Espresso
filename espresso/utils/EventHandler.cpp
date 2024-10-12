@@ -2,6 +2,7 @@
 #include "SDL_events.h"
 #include "core/Application.h"
 #include "core/Logger.h"
+#include "input/Input.h"
 
 namespace Espresso::Internals
 {
@@ -21,6 +22,32 @@ namespace Espresso::Internals
 
 		case SDL_WINDOWEVENT:
 			Application::main->_window->_handleEvent(event);
+			break;
+
+		case SDL_KEYDOWN:
+		case SDL_KEYUP:
+		case SDL_MOUSEMOTION:
+		case SDL_MOUSEBUTTONDOWN:
+		case SDL_MOUSEBUTTONUP:
+		case SDL_MOUSEWHEEL:
+		case SDL_DROPFILE:
+		case SDL_CONTROLLERDEVICEADDED:
+		case SDL_CONTROLLERAXISMOTION:
+		case SDL_CONTROLLERBUTTONDOWN:
+		case SDL_CONTROLLERBUTTONUP:
+		case SDL_CONTROLLERTOUCHPADMOTION:
+		case SDL_CONTROLLERTOUCHPADDOWN:
+		case SDL_CONTROLLERTOUCHPADUP:
+		case SDL_CONTROLLERSENSORUPDATE:
+		case SDL_CONTROLLERDEVICEREMOVED:
+		case SDL_JOYDEVICEADDED:
+		case SDL_JOYDEVICEREMOVED:
+		case SDL_JOYBALLMOTION:
+		case SDL_JOYBUTTONDOWN:
+		case SDL_JOYBUTTONUP:
+		case SDL_JOYHATMOTION:
+		case SDL_JOYBATTERYUPDATED:
+			Input::Handle((void*)event);
 			break;
 
 		default:

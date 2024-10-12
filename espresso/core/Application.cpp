@@ -4,6 +4,7 @@
 #include "core/Logger.h"
 #include "core/Scene.h"
 #include "graphics/Renderer.h"
+#include "input/Input.h"
 #include "utils/EventHandler.h"
 #include "utils/StringUtils.h"
 #include "utils/assets/AssetManager.h"
@@ -72,6 +73,8 @@ namespace Espresso
 		while (_running)
 		{
 			_time->StartMeasure();
+
+			Input::Update();
 
 			while (SDL_PollEvent(&e) == 1)
 			{
